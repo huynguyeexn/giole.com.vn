@@ -10,8 +10,8 @@ export default function ResultBox() {
       >
         {Array(10)
           .fill("")
-          .map(() => (
-            <Card className="mb-2 hover:bg-gray-50">
+          .map((value, index) => (
+            <Card key={index} className="mb-2 hover:bg-gray-50">
               <Flex gap="3" align="start">
                 <Box className="gap-3">
                   <Text as="div" size="3" weight="bold">
