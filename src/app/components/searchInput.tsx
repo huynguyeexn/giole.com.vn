@@ -47,7 +47,7 @@ export default function SearchInput({
     });
 
     return id;
-  }, [provinces]);
+  }, [provinces, searchInput]);
 
   const handleChangeProvince = useCallback(
     async (provinceId: number) => {
@@ -105,6 +105,7 @@ export default function SearchInput({
         setChurches(response);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInput]);
 
   return (
@@ -159,6 +160,7 @@ const NameInput = ({ onChange }: InputProps) => {
 
   useEffect(() => {
     onChange(searchInputDebound);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchInputDebound]);
 
   return (

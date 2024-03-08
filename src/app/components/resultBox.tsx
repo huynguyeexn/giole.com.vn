@@ -24,8 +24,8 @@ export default function ResultBox({ churches }: Props) {
         renderItem={(item) => (
           <List.Item
             title="Nhấn (click) để xem vị trí nhà thờ trên bản đồ"
-            key={item.id || ""}
-            actions={[<Link>Góp ý thông tin</Link>]}
+            key={item.id}
+            actions={[<Link key={item.id}>Góp ý thông tin</Link>]}
           >
             <List.Item.Meta
               title={mapChurchType(item.name, item.type)}
