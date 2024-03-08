@@ -47,7 +47,8 @@ export default function SearchInput({
     });
 
     return id;
-  }, [provinces, searchInput]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [provinces]);
 
   const handleChangeProvince = useCallback(
     async (provinceId: number) => {
@@ -88,7 +89,6 @@ export default function SearchInput({
   );
 
   useEffect(() => {
-    console.log(searchInput);
     if (searchInput.name == "") return;
     (async () => {
       const { name, province, district } = searchInput;
