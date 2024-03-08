@@ -1,9 +1,7 @@
-import { Theme, ThemePanel } from "@radix-ui/themes";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-
-import "./globals.css";
-import "@radix-ui/themes/styles.css";
+import SWRProvider from "./components/swrProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,6 +11,8 @@ export const metadata: Metadata = {
   authors: [{ name: "Hui", url: "https://github.com/huynguyeexn" }],
 };
 
+const style = { padding: 0, margin: 0 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -20,10 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Theme panelBackground="solid" scaling="110%">
-          {children}
-        </Theme>
+      <body style={style} className={inter.className}>
+        <SWRProvider>
+          <AntdRegistry>{children}</AntdRegistry>
+        </SWRProvider>
       </body>
     </html>
   );
