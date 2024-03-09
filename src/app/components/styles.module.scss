@@ -1,0 +1,43 @@
+@import "../../styles/common.scss";
+
+.resultBox {
+  margin-top: 16px;
+  height: calc(100svh - 244px);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.searchBox {
+  height: calc(100svh - 32px);
+  width: calc(45svw - 32px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 16px;
+  z-index: 10;
+
+  > div {
+    height: 100%;
+    width: 100%;
+  }
+
+  @include Responsive(MD) {
+    width: 50svw;
+  }
+  @include Responsive(SM) {
+    height: 100svh;
+    width: 100svw;
+    margin: 0;
+  }
+}
+
+.mapBox {
+  height: 100svh;
+  width: 100svw;
+
+  > iframe {
+    border: none;
+    height: 100%;
+    width: 100%;
+  }
+}

@@ -1,6 +1,8 @@
-.PHONY: app build cmd fix-permissions gen-key
+.PHONY: app dev build cmd fix-permissions gen-key
 app:
 	docker compose up -d
+dev:
+	docker compose up
 stop:
 	docker compose stop
 build:

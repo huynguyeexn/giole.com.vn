@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
-import MapBox from "./components/mapBox";
-import SearchBox from "./components/searchBox";
+import MapBox from "./components/map";
+import SearchBox from "./components/card";
+import HomeContextProvider from "./context";
 
 const fullScreenStyle: CSSProperties = {
   height: "100svh",
@@ -11,10 +12,14 @@ const fullScreenStyle: CSSProperties = {
 };
 
 export default function Home() {
+  console.log("Home");
+
   return (
-    <div style={fullScreenStyle}>
-      <MapBox />
-      <SearchBox />
-    </div>
+    <HomeContextProvider>
+      <div style={fullScreenStyle}>
+        <MapBox />
+        <SearchBox />
+      </div>
+    </HomeContextProvider>
   );
 }
