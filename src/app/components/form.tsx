@@ -18,13 +18,14 @@ export default function FormComponent() {
 
   const handleChangeProvince = async (value: number) => {
     setIsLoadDistricts(true);
-    const response = await provinceServices.getDistrictsByProvinceId(value);
-    console.log(response);
-    if (response.districts) {
-      actions.updateDistricts(response.districts.sort());
-      form.setFieldValue("district", undefined);
-      setIsLoadDistricts(false);
-    }
+
+    await provinceServices.getDistrictsByProvinceId(value).then((response) => {
+      if (response.districts) {
+        actions.updateDistricts(response.districts.sort());
+        form.setFieldValue("district", undefined);
+        setIsLoadDistricts(false);
+      }
+    });
   };
 
   const handleChangeForm = (_: any, values: FormTypes) => {
@@ -34,7 +35,6 @@ export default function FormComponent() {
     if (!values.name) return;
 
     debounce.current = setTimeout(async () => {
-      console.log("[3] handleChangeForm debounce", values);
       actions.updateSearching(true);
       const { name, province, district } = values;
       let query = `church=${name}`;
@@ -56,12 +56,15 @@ export default function FormComponent() {
   const filterOption = (
     input: string,
     option?: { label: string; value: number }
-  ) => toUnaccentName(option?.label ?? "").includes(toUnaccentName(input));
+  ) => {
+    return toUnaccentName(option?.label ?? "").includes(toUnaccentName(input));
+  };
 
   return (
     <>
       {state.provinces.length > 0 && (
         <Form
+          layout="vertical"
           form={form}
           onValuesChange={handleChangeForm}
           initialValues={{
@@ -73,8 +76,14 @@ export default function FormComponent() {
         >
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <Item name="province" style={{ marginBottom: 0 }}>
+              <Item
+                name="province"
+                style={{ marginBottom: 0 }}
+                label="Tỉnh thành"
+                required
+              >
                 <Select
+                  size="large"
                   showSearch
                   style={{ width: "100%" }}
                   placeholder="Chọn tỉnh thành..."
@@ -89,8 +98,14 @@ export default function FormComponent() {
               </Item>
             </Col>
             <Col span={12}>
-              <Item name="district" style={{ marginBottom: 0 }}>
+              <Item
+                name="district"
+                style={{ marginBottom: 0 }}
+                label="Quận huyện"
+              >
                 <Select
+                  title="Chọn quận huyện để có kết quả chính xác hơn."
+                  size="large"
                   loading={isLoadDistricts}
                   style={{ width: "100%" }}
                   showSearch
@@ -107,8 +122,18 @@ export default function FormComponent() {
               </Item>
             </Col>
             <Col span={24}>
-              <Item name="name" style={{ marginBottom: 0 }}>
-                <Input placeholder="Tên nhà thờ..."></Input>
+              <Item
+                name="name"
+                style={{ marginBottom: 0 }}
+                label="Tên nhà thờ"
+                required
+              >
+                <Input
+                  autoFocus={true}
+                  allowClear
+                  size="large"
+                  placeholder="Hãy nhập tên nhà thờ để có thể tìm kiếm. (VD: Ba chuông)"
+                ></Input>
               </Item>
             </Col>
           </Row>

@@ -1,4 +1,6 @@
 "use client";
+import { Church } from "@/types/church";
+import { mapAddress, mapChurchType } from "@/utils/helpers";
 import {
   APIProvider,
   AdvancedMarker,
@@ -8,18 +10,18 @@ import {
   useMap,
   useMapsLibrary,
 } from "@vis.gl/react-google-maps";
-import { useContext, useEffect, useState } from "react";
-import { HomeContext } from "../context";
-import { Church } from "@/types/church";
 import { Typography } from "antd";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { HomeContext } from "../context";
 const { Paragraph, Link, Text } = Typography;
 
-const center = { lat: 14.058324, lng: 100.277199 };
+const center = { lat: 16.4534687, lng: 107.5359134 };
 
 const getChurchAddress = (church?: Church) => {
   if (!church) return;
-  const name = `Nha tho ${church.name}, ${church.address}, ${church.district.name}, ${church.province.name}`;
-  console.log(name);
+
+  const name =
+    mapChurchType(church.name, church.type) + ", " + mapAddress(church);
   return name;
 };
 
@@ -29,81 +31,85 @@ function MapCompoment() {
   const { state } = useContext(HomeContext);
 
   const [infowindowOpen, setInfowindowOpen] = useState(true);
+
+  const [placeInfo, setPlaceInfo] =
+    useState<google.maps.places.PlaceResult | null>(null);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
   const geocodingLib = useMapsLibrary("geocoding");
   const markerLib = useMapsLibrary("marker");
   const placesLib = useMapsLibrary("places");
 
-  const [infoWindowPos, setInfoWindowPos] = useState(center);
+  const getChurchPositionCallback = useCallback(
+    (
+      result: google.maps.GeocoderResult[] | null,
+      placeService: google.maps.places.PlacesService
+    ) => {
+      if (result && map) {
+        const resultFind = result.find((r) => r.types.includes("church"));
+        const finalResult = resultFind || result[0];
+
+        const placeDetailResquest = {
+          placeId: finalResult.place_id,
+          fields: ["name", "formatted_address", "url", "geometry"],
+        };
+
+        const placeDetailCallback = (
+          placeResult: google.maps.places.PlaceResult | null
+        ) => {
+          if (placeResult) {
+            setPlaceInfo(placeResult);
+
+            map.setZoom(13);
+            map.fitBounds(finalResult.geometry.viewport);
+          }
+        };
+
+        placeService.getDetails(placeDetailResquest, placeDetailCallback);
+      }
+    },
+    [map]
+  );
 
   useEffect(() => {
     if (!placesLib || !markerLib || !geocodingLib || !map) return;
     const placeService = new placesLib.PlacesService(map);
     const geocoder = new geocodingLib.Geocoder();
 
-    const request = {
+    const searchRequest = {
       address: getChurchAddress(state?.churchSelected),
+      language: "vi",
+      region: "VN",
     };
-    const callback = (result: google.maps.GeocoderResult[] | null) => {
-      if (result && result[0]) {
-        const pos = result[0].geometry.location;
-        const latLng = {
-          lat: pos.lat(),
-          lng: pos.lng(),
-        };
 
-        map.setCenter(pos);
-        map.setZoom(15);
-        map.fitBounds(result[0].geometry.viewport, {
-          left: 500,
-        });
+    geocoder.geocode(searchRequest, (result) =>
+      getChurchPositionCallback(result, placeService)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.churchSelected]);
 
-        setInfoWindowPos(latLng);
-
-        placeService.getDetails(
-          {
-            placeId: result[0].place_id,
-            fields: ["name", "formatted_address", "url"],
-          },
-          (r: any) => {
-            console.log(r);
-          }
-        );
-      }
-    };
-    geocoder.geocode(request, callback);
-  }, [
-    state.churchSelected,
-    map,
-    geocodingLib,
-    placesLib,
-    markerLib,
-    state.churches,
-  ]);
-
-  console.log(state);
+  console.log(placeInfo);
 
   return (
     process.env && (
       <Map
         mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}
         defaultCenter={center}
-        defaultZoom={5}
+        defaultZoom={6}
         streetViewControl={false}
       >
-        {state?.churchSelected && (
+        {placeInfo !== null && (
           <>
             <AdvancedMarker
               ref={markerRef}
               onClick={() => setInfowindowOpen(true)}
-              position={infoWindowPos}
-              title={"AdvancedMarker that opens an Infowindow when clicked."}
+              position={placeInfo.geometry?.location}
+              title={"Nhấn (click) vào để xem thông tin chi tiết"}
             ></AdvancedMarker>
             {infowindowOpen && (
               <InfoWindow
                 anchor={marker}
-                maxWidth={500}
+                maxWidth={400}
                 onCloseClick={() => setInfowindowOpen(false)}
               >
                 <Text strong>Nhà thờ {state.churchSelected?.name}</Text>
@@ -116,7 +122,9 @@ function MapCompoment() {
                     <li>Chúa Nhật: {state?.churchSelected?.sunday || ""}</li>
                   </ul>
                 </Paragraph>
-                <Link>Xem trên Google Map</Link>
+                <Link target="_shift" href={placeInfo.url}>
+                  Xem trên Google Map{" "}
+                </Link>
               </InfoWindow>
             )}
           </>

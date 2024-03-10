@@ -1,25 +1,11 @@
-import { mapChurchType, mapDivisionType } from "@/utils/helpers";
-import { List, Typography } from "antd";
-import { Church } from "../../types/church";
+import { mapAddress, mapChurchType } from "@/utils/helpers";
+import { EnvironmentOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { Button, List, Typography } from "antd";
 import { useContext } from "react";
-
 import { HomeContext } from "../context";
 import styles from "./styles.module.scss";
 
-const { Paragraph, Link, Text } = Typography;
-
-const mapAddress = (item: Church) => {
-  if (!item) {
-    return "";
-  }
-
-  let districtDivisionType = mapDivisionType(
-    item.district.name,
-    item.district.division_type
-  );
-
-  return `${item.address}, ${districtDivisionType}, ${item.province.name}`;
-};
+const { Paragraph, Text } = Typography;
 
 export default function ResultComponent() {
   const { state, actions } = useContext(HomeContext);
@@ -41,10 +27,20 @@ export default function ResultComponent() {
         dataSource={state.churches || []}
         renderItem={(item) => (
           <List.Item
-            onClick={() => handleSelectChurch(item.id)}
-            title="Nhấn (click) để xem vị trí nhà thờ trên bản đồ"
             key={item.id}
-            actions={[<Link key={item.id}>Góp ý thông tin</Link>]}
+            actions={[
+              // <Button type="dashed" key={item.id} icon={<InfoCircleOutlined />}>
+              //   Góp ý thông tin
+              // </Button>,
+              <Button
+                type="link"
+                icon={<EnvironmentOutlined />}
+                key={item.id}
+                onClick={() => handleSelectChurch(item.id)}
+              >
+                Xem vị trí trên bản đồ
+              </Button>,
+            ]}
           >
             <List.Item.Meta
               title={mapChurchType(item.name, item.type)}

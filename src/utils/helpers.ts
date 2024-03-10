@@ -1,3 +1,4 @@
+import { Church } from "@/types/church";
 import { CHURCH_TYPE, DIVISION_TYPE } from "./constants";
 
 export const mapDivisionType = (name: string, type: string | number) => {
@@ -46,6 +47,24 @@ export const mapChurchType = (name: string, type: string | number) => {
   }
 
   return `${typeStr} ${name}`.trim();
+};
+
+export const mapAddress = (item: Church) => {
+  if (!item) {
+    return "";
+  }
+
+  let districtDivisionType = mapDivisionType(
+    item.district.name,
+    item.district.division_type
+  );
+
+  let provinceDivisionType = mapDivisionType(
+    item.province.name,
+    item.province.division_type
+  );
+
+  return `${item.address}, ${districtDivisionType}, ${provinceDivisionType}`;
 };
 
 export function toUnaccentName(str: string): string {

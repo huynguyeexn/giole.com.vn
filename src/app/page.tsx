@@ -1,25 +1,10 @@
-import { CSSProperties } from "react";
-import MapBox from "./components/map";
-import SearchBox from "./components/card";
 import HomeContextProvider from "./context";
+import HomeComponent from "./components/home";
 
-const fullScreenStyle: CSSProperties = {
-  height: "100svh",
-  width: "100svw",
-  overflow: "hidden",
-  position: "relative",
-  backgroundColor: "rgb(240, 242, 245)",
-};
-
-export default function Home() {
-  console.log("Home");
-
+export default function HomePage() {
   return (
     <HomeContextProvider>
-      <div style={fullScreenStyle}>
-        <MapBox />
-        <SearchBox />
-      </div>
+      <HomeComponent />
     </HomeContextProvider>
   );
 }

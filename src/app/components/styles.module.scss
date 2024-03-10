@@ -1,43 +1,107 @@
 @import "../../styles/common.scss";
 
+.page {
+  height: 100svh;
+  width: 100svw;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+
+  @include Responsive(SM) {
+    display: block;
+  }
+}
+
+.drawerWrapper {
+  display: none;
+
+  @include Responsive(SM) {
+    display: block;
+  }
+}
+
+.searchWrapper {
+  width: 50%;
+
+  @include Responsive(SM) {
+    width: 100%;
+  }
+}
+
+.mapWrapper {
+  width: 50%;
+
+  @include Responsive(SM) {
+    // display: none;
+    width: 100%;
+    height: calc(100% - 40px);
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    right: 0;
+  }
+}
+
+.close {
+  display: block;
+  @include Responsive(SM) {
+    display: none;
+  }
+}
+
+.open {
+  @include Responsive(SM) {
+    display: block;
+  }
+}
+
+.mapBoxHeader {
+  background: white;
+  display: none;
+
+  @include Responsive(SM) {
+    display: block;
+  }
+}
+
 .resultBox {
   margin-top: 16px;
-  height: calc(100svh - 244px);
+  height: calc(100svh - 290px);
   overflow: hidden;
   overflow-y: scroll;
 }
 
-.searchBox {
-  height: calc(100svh - 32px);
-  width: calc(45svw - 32px);
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 16px;
-  z-index: 10;
+// .searchBox {
+//   height: calc(100svh - 32px);
+//   width: calc(45svw - 32px);
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   margin: 16px;
+//   z-index: 10;
 
-  > div {
-    height: 100%;
-    width: 100%;
-  }
+//   > div {
+//     height: 100%;
+//     width: 100%;
+//   }
 
-  @include Responsive(MD) {
-    width: 50svw;
-  }
-  @include Responsive(SM) {
-    height: 100svh;
-    width: 100svw;
-    margin: 0;
-  }
-}
+//   @include Responsive(MD) {
+//     width: 50svw;
+//   }
+//   @include Responsive(SM) {
+//     height: 100svh;
+//     width: 100svw;
+//     margin: 0;
+//   }
+// }
 
-.mapBox {
-  height: 100svh;
-  width: 100svw;
+// .mapBox {
+//   height: 100svh;
+//   width: 100svw;
 
-  > iframe {
-    border: none;
-    height: 100%;
-    width: 100%;
-  }
-}
+//   > iframe {
+//     border: none;
+//     height: 100%;
+//     width: 100%;
+//   }
+// }
