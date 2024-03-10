@@ -15,6 +15,7 @@ export interface HomeStateInterface {
   districts: Array<District>;
   churches: Array<Church>;
   searchForm: SearchForm;
+  churchSelected?: Church;
   isSearching: boolean;
 }
 
@@ -23,6 +24,7 @@ export const initHomeStates: HomeStateInterface = {
   districts: [],
   churches: [],
   isSearching: false,
+  churchSelected: undefined,
   searchForm: {
     province: -1,
     district: -1,
@@ -36,6 +38,7 @@ export const HOME_ACTIONS = {
   UPDATE_CHURCHES: "UPDATE_CHURCHES",
   UPDATE_SEARCH_FORM: "UPDATE_SEARCH_FORM",
   SET_IS_SEARCHING: "SET_IS_SEARCHING",
+  SELECT_CHURCH: "SELECT_CHURCH",
 };
 
 const reducer = (
@@ -68,6 +71,11 @@ const reducer = (
         ...prevState,
         searchForm: action.value,
       };
+    case HOME_ACTIONS.SELECT_CHURCH:
+      return {
+        ...prevState,
+        churchSelected: action.value,
+      };
 
     default:
       return prevState;
@@ -82,6 +90,7 @@ export const HomeContext = createContext({
     updateChurches: (churches: Church[]) => {},
     updateSearching: (isSearching: boolean) => {},
     updateSearchForm: (values: SearchForm) => {},
+    selectChurch: (church: Church | undefined) => {},
   },
 });
 
@@ -111,6 +120,9 @@ const HomeContextProvider = ({ children }: Props) => {
         },
         updateSearchForm: (values: SearchForm) => {
           dispatch({ type: HOME_ACTIONS.UPDATE_SEARCH_FORM, value: values });
+        },
+        selectChurch: (church: Church | undefined) => {
+          dispatch({ type: HOME_ACTIONS.SELECT_CHURCH, value: church });
         },
       },
     }),

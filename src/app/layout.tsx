@@ -9,6 +9,13 @@ export const metadata: Metadata = {
   title: "Giờ thánh lễ",
   description: "Tra cứu, tìm kiếm thông tin giờ lễ các giáo xứ trên toàn quốc",
   authors: [{ name: "Hui", url: "https://github.com/huynguyeexn" }],
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    minimumScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 };
 
 const style = { padding: 0, margin: 0 };

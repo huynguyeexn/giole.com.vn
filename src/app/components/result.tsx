@@ -22,7 +22,12 @@ const mapAddress = (item: Church) => {
 };
 
 export default function ResultComponent() {
-  const { state } = useContext(HomeContext);
+  const { state, actions } = useContext(HomeContext);
+
+  const handleSelectChurch = (id: number) => {
+    const church = state.churches.find((c) => c.id === id);
+    actions.selectChurch(church);
+  };
 
   console.log("---- ResultBox");
   return (
@@ -36,6 +41,7 @@ export default function ResultComponent() {
         dataSource={state.churches || []}
         renderItem={(item) => (
           <List.Item
+            onClick={() => handleSelectChurch(item.id)}
             title="Nhấn (click) để xem vị trí nhà thờ trên bản đồ"
             key={item.id}
             actions={[<Link key={item.id}>Góp ý thông tin</Link>]}
