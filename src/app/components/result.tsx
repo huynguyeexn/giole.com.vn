@@ -45,12 +45,12 @@ export default function ResultComponent() {
                 key={item.id}
                 icon={<InfoCircleOutlined />}
               >
-                Góp ý thông tin
+                Góp ý
               </Button>,
               <Link key={item.id} onClick={() => handleSelectChurch(item.id)}>
                 <Space>
                   <EnvironmentOutlined />
-                  Xem vị trí trên bản đồ
+                  Xem trên bản đồ
                 </Space>
               </Link>,
             ]}
