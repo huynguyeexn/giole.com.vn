@@ -15,6 +15,7 @@ export type Church = {
   sunday: string;
   lat: number;
   lng: number;
+  place_id: string;
   province_id: number;
   district_id: number;
   created_at: Date;

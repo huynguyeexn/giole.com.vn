@@ -1,9 +1,9 @@
 "use client";
+import { CloseOutlined } from "@ant-design/icons";
 import { Button, Space, Typography } from "antd";
 import { HomeContext } from "../context";
 import SearchBox from "./card";
 import MapBox from "./map";
-import { CloseOutlined } from "@ant-design/icons";
 
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
