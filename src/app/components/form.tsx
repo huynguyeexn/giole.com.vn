@@ -10,7 +10,6 @@ const { Item } = Form;
 type FormTypes = { province: number; district: number; name: string };
 
 export default function FormComponent() {
-  console.log("---- SearchInput");
   const debounce = useRef<any>(null);
   const [isLoadDistricts, setIsLoadDistricts] = useState<boolean>(false);
   const { state, actions } = useContext(HomeContext);
@@ -83,7 +82,7 @@ export default function FormComponent() {
                 required
               >
                 <Select
-                  size="large"
+                  // size="large"
                   showSearch
                   style={{ width: "100%" }}
                   placeholder="Chọn tỉnh thành..."
@@ -105,7 +104,7 @@ export default function FormComponent() {
               >
                 <Select
                   title="Chọn quận huyện để có kết quả chính xác hơn."
-                  size="large"
+                  // size="large"
                   loading={isLoadDistricts}
                   style={{ width: "100%" }}
                   showSearch
@@ -131,7 +130,7 @@ export default function FormComponent() {
                 <Input
                   autoFocus={true}
                   allowClear
-                  size="large"
+                  // size="large"
                   placeholder="Hãy nhập tên nhà thờ để có thể tìm kiếm. (VD: Ba chuông)"
                 ></Input>
               </Item>

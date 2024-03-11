@@ -30,8 +30,6 @@ export default function CardComponent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("-- SearchBox");
-
   return (
     <Card
       style={{ height: "100%" }}

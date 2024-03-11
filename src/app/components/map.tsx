@@ -88,8 +88,6 @@ function MapCompoment() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.churchSelected]);
 
-  console.log(placeInfo);
-
   return (
     process.env && (
       <Map

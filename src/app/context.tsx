@@ -99,7 +99,6 @@ type Props = Readonly<{
 }>;
 
 const HomeContextProvider = ({ children }: Props) => {
-  console.log("HomeContextProvider");
   const [state, dispatch] = useReducer(reducer, initHomeStates);
 
   const contextValue = useMemo(
