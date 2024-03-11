@@ -16,12 +16,6 @@ export default function MapContainer() {
     const currentChurch = state.churchSelected;
     const { lat, lng } = currentChurch;
 
-    const options = {
-      center: { lng, lat },
-      zoom: 17,
-      duration: 2000,
-    };
-
     const popup = new mapboxgl.Popup({
       offset: 25,
       closeButton: true,
@@ -48,7 +42,13 @@ export default function MapContainer() {
       .addTo(map.current)
       .togglePopup();
 
-    map.current.flyTo(options);
+    const options = {
+      center: { lng, lat },
+      zoom: 17,
+      duration: 3000,
+    };
+    map.current.jumpTo(options);
+    // map.current.setCenter({ lng, lat }).setZoom(17);
   }, [state.churchSelected]);
 
   useEffect(() => {

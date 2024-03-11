@@ -1,6 +1,6 @@
 "use client";
 import { CloseOutlined } from "@ant-design/icons";
-import { Button, Space, Typography } from "antd";
+import { Button, Space } from "antd";
 import { HomeContext } from "../context";
 import SearchBox from "./card";
 import MapBox from "./map";
@@ -8,15 +8,14 @@ import MapBox from "./map";
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 
-const { Title } = Typography;
-
 export default function HomeComponent() {
-  const { state } = useContext(HomeContext);
+  const { state, actions } = useContext(HomeContext);
 
   const [drawerOpen, setDrawer] = useState(false);
 
   const handleCloseDrawer = () => {
     setDrawer(false);
+    actions.selectChurch(undefined);
   };
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function HomeComponent() {
       </div>
       <div
         className={
-          styles.mapWrapper + " " + (drawerOpen ? styles.open : styles.close)
+          styles.mapWrapper + " " + (!drawerOpen ? styles.close : styles.open)
         }
       >
         <div className={styles.mapBoxHeader}>
