@@ -1,8 +1,9 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { Analytics } from "@vercel/analytics/react";
+import "mapbox-gl/dist/mapbox-gl.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import SWRProvider from "./components/swrProvider";
-
 import "./globals.scss";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,16 +30,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css"
-          rel="stylesheet"
-        />
-      </head>
       <body style={style} className={inter.className}>
         <SWRProvider>
           <AntdRegistry>{children}</AntdRegistry>
         </SWRProvider>
+        <Analytics />
       </body>
     </html>
   );

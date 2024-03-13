@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
+    "@mapbox/mapbox-gl-language": "^1.0.1",
+    "@vercel/analytics": "^1.2.2",
     "@vis.gl/react-google-maps": "^0.7.1",
     "antd": "^5.15.1",
     "axios": "^1.6.7",
@@ -17,6 +19,7 @@
     "next": "14.1.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-map-gl": "^7.1.7",
     "swr": "^2.2.5"
   },
   "devDependencies": {
