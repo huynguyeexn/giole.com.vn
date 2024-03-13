@@ -7,8 +7,14 @@ import MapBox from "./map";
 
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
+import { InitResponse } from "@/types/common";
+import { MapProvider } from "react-map-gl";
 
-export default function HomeComponent() {
+type Props = {
+  initData: InitResponse;
+};
+
+export default function HomeComponent({ initData }: Props) {
   const { state, actions } = useContext(HomeContext);
 
   const [drawerOpen, setDrawer] = useState(false);
@@ -23,6 +29,18 @@ export default function HomeComponent() {
       setDrawer(true);
     }
   }, [state.churchSelected]);
+
+  useEffect(() => {
+    try {
+      actions.updateProvinces(initData.provinces);
+      actions.updateDistricts(initData.districts);
+      actions.updateChurches(initData.churches);
+      actions.updateProvinces(initData.provinces);
+    } catch (error) {
+      console.log(error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initData]);
 
   return (
     <div className={styles.page}>
@@ -44,7 +62,9 @@ export default function HomeComponent() {
             />
           </Space>
         </div>
-        <MapBox />
+        <MapProvider>
+          <MapBox />
+        </MapProvider>
       </div>
     </div>
   );
