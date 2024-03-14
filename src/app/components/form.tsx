@@ -1,9 +1,9 @@
+import appServices from "@/services/app";
+import provinceServices from "@/services/province";
 import { mapDivisionType, toUnaccentName } from "@/utils/helpers";
 import { Col, Form, Input, Row, Select } from "antd";
-import { FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { HomeContext } from "../context";
-import provinceServices from "@/services/province";
-import appServices from "@/services/app";
 
 const { Item } = Form;
 

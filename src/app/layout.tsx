@@ -1,6 +1,4 @@
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
@@ -36,8 +34,6 @@ export default function RootLayout({
         <SWRProvider>
           <AntdRegistry>{children}</AntdRegistry>
         </SWRProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
