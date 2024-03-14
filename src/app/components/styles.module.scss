@@ -22,6 +22,7 @@
 
 .searchWrapper {
   width: 50%;
+  height: 100svh;
 
   @include Responsive(SM) {
     width: 100%;
@@ -30,28 +31,29 @@
 
 .mapWrapper {
   width: 50%;
+  height: 100svh;
 
   @include Responsive(SM) {
     // display: none;
     width: 100%;
     height: calc(100% - 40px);
     position: absolute;
-    z-index: 10;
+    z-index: -1;
     top: 0;
     right: 0;
   }
 }
 
 .close {
-  display: block;
+  z-index: 0;
   @include Responsive(SM) {
-    display: none;
+    z-index: -1;
   }
 }
 
 .open {
   @include Responsive(SM) {
-    display: block;
+    z-index: 10;
   }
 }
 
@@ -71,37 +73,26 @@
   overflow-y: scroll;
 }
 
-// .searchBox {
-//   height: calc(100svh - 32px);
-//   width: calc(45svw - 32px);
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   margin: 16px;
-//   z-index: 10;
+.mapBox {
+  height: 100%;
+  width: 100%;
+}
 
-//   > div {
-//     height: 100%;
-//     width: 100%;
-//   }
+.popup {
+  padding: 0 16px;
+  font-size: 14px;
 
-//   @include Responsive(MD) {
-//     width: 50svw;
-//   }
-//   @include Responsive(SM) {
-//     height: 100svh;
-//     width: 100svw;
-//     margin: 0;
-//   }
-// }
+  > * {
+    margin: 0;
+    padding: 0;
+  }
 
-// .mapBox {
-//   height: 100svh;
-//   width: 100svw;
+  > p {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
 
-//   > iframe {
-//     border: none;
-//     height: 100%;
-//     width: 100%;
-//   }
-// }
+  > ul {
+    padding: 0 10px;
+  }
+}

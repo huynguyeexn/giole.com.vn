@@ -43,13 +43,21 @@ export default function ResultComponent() {
                 onClick={() => handleReportClick(item.id, item.name)}
                 type="dashed"
                 key={item.id}
-                icon={<InfoCircleOutlined />}
+                icon={
+                  <InfoCircleOutlined
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
+                }
               >
                 Góp ý
               </Button>,
               <Link key={item.id} onClick={() => handleSelectChurch(item.id)}>
                 <Space>
-                  <EnvironmentOutlined />
+                  <EnvironmentOutlined
+                    onPointerEnterCapture={undefined}
+                    onPointerLeaveCapture={undefined}
+                  />
                   Xem trên bản đồ
                 </Space>
               </Link>,

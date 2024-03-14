@@ -1,22 +1,27 @@
 "use client";
-import { Button, Space, Typography } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
+import { Button, Space } from "antd";
 import { HomeContext } from "../context";
 import SearchBox from "./card";
 import MapBox from "./map";
-import { CloseOutlined } from "@ant-design/icons";
 
 import { useContext, useEffect, useState } from "react";
 import styles from "./styles.module.scss";
+import { InitResponse } from "@/types/common";
+import { MapProvider } from "react-map-gl";
 
-const { Title } = Typography;
+type Props = {
+  initData: InitResponse;
+};
 
-export default function HomeComponent() {
-  const { state } = useContext(HomeContext);
+export default function HomeComponent({ initData }: Props) {
+  const { state, actions } = useContext(HomeContext);
 
   const [drawerOpen, setDrawer] = useState(false);
 
   const handleCloseDrawer = () => {
     setDrawer(false);
+    actions.selectChurch(undefined);
   };
 
   useEffect(() => {
@@ -25,6 +30,18 @@ export default function HomeComponent() {
     }
   }, [state.churchSelected]);
 
+  useEffect(() => {
+    try {
+      actions.updateProvinces(initData.provinces);
+      actions.updateDistricts(initData.districts);
+      actions.updateChurches(initData.churches);
+      actions.updateProvinces(initData.provinces);
+    } catch (error) {
+      console.log(error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initData]);
+
   return (
     <div className={styles.page}>
       <div className={styles.searchWrapper}>
@@ -32,20 +49,27 @@ export default function HomeComponent() {
       </div>
       <div
         className={
-          styles.mapWrapper + " " + (drawerOpen ? styles.open : styles.close)
+          styles.mapWrapper + " " + (!drawerOpen ? styles.close : styles.open)
         }
       >
         <div className={styles.mapBoxHeader}>
           <Space>
             <Button
               onClick={handleCloseDrawer}
-              type="text"
-              icon={<CloseOutlined />}
+              type={"text"}
+              icon={
+                <CloseOutlined
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                />
+              }
               size={"large"}
             />
           </Space>
         </div>
-        <MapBox />
+        <MapProvider>
+          <MapBox />
+        </MapProvider>
       </div>
     </div>
   );

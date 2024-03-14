@@ -5,15 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: giothanhle-client
-    command: yarn dev
+      target: development
+    container_name: giole-app
+    restart: always
     ports:
       - '80:3000'
     volumes:
       - .:/usr/src/app
-      - ./node_modules:/usr/src/app/node_modules
-    restart: unless-stopped
-
-networks:
-  default:
-    driver: bridge
+      - /usr/src/app/node_modules

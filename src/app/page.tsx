@@ -1,10 +1,13 @@
 import HomeContextProvider from "./context";
 import HomeComponent from "./components/home";
+import appServices from "@/services/app";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const initData = await appServices.getHomeInitData();
+
   return (
     <HomeContextProvider>
-      <HomeComponent />
+      <HomeComponent initData={initData} />
     </HomeContextProvider>
   );
 }

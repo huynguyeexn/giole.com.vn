@@ -1,148 +1,96 @@
-"use client";
 import { Church } from "@/types/church";
-import { mapAddress, mapChurchType } from "@/utils/helpers";
-import {
-  APIProvider,
-  AdvancedMarker,
-  InfoWindow,
-  Map,
-  useAdvancedMarkerRef,
+import mapboxgl from "mapbox-gl";
+import { useCallback, useContext, useEffect, useRef } from "react";
+import Map, {
+  GeolocateControl,
+  Marker,
+  NavigationControl,
   useMap,
-  useMapsLibrary,
-} from "@vis.gl/react-google-maps";
-import { Typography } from "antd";
-import { useCallback, useContext, useEffect, useState } from "react";
+} from "react-map-gl";
 import { HomeContext } from "../context";
-const { Paragraph, Link, Text } = Typography;
+import styles from "./styles.module.scss";
 
-const center = { lat: 16.4534687, lng: 107.5359134 };
+const mapboxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY || "";
 
-const getChurchAddress = (church?: Church) => {
-  if (!church) return;
-
-  const name =
-    mapChurchType(church.name, church.type) + ", " + mapAddress(church);
-  return name;
-};
-
-function MapCompoment() {
-  const map = useMap();
-
+export default function MapContainer() {
   const { state } = useContext(HomeContext);
-
-  const [infowindowOpen, setInfowindowOpen] = useState(true);
-
-  const [placeInfo, setPlaceInfo] =
-    useState<google.maps.places.PlaceResult | null>(null);
-  const [markerRef, marker] = useAdvancedMarkerRef();
-
-  const geocodingLib = useMapsLibrary("geocoding");
-  const markerLib = useMapsLibrary("marker");
-  const placesLib = useMapsLibrary("places");
-
-  const getChurchPositionCallback = useCallback(
-    (
-      result: google.maps.GeocoderResult[] | null,
-      placeService: google.maps.places.PlacesService
-    ) => {
-      if (result && map) {
-        const resultFind = result.find((r) => r.types.includes("church"));
-        const finalResult = resultFind || result[0];
-
-        const placeDetailResquest = {
-          placeId: finalResult.place_id,
-          fields: ["name", "formatted_address", "url", "geometry"],
-        };
-
-        const placeDetailCallback = (
-          placeResult: google.maps.places.PlaceResult | null
-        ) => {
-          if (placeResult) {
-            setPlaceInfo(placeResult);
-
-            map.setZoom(13);
-            map.fitBounds(finalResult.geometry.viewport);
-          }
-        };
-
-        placeService.getDetails(placeDetailResquest, placeDetailCallback);
-      }
-    },
-    [map]
-  );
+  const { map } = useMap();
 
   useEffect(() => {
-    if (!placesLib || !markerLib || !geocodingLib || !map) return;
-    const placeService = new placesLib.PlacesService(map);
-    const geocoder = new geocodingLib.Geocoder();
+    if (!map || !state.churchSelected) return;
+    const currentChurch = state.churchSelected;
+    const { lat, lng } = currentChurch;
 
-    const searchRequest = {
-      address: getChurchAddress(state?.churchSelected),
-      language: "vi",
-      region: "VN",
+    const options = {
+      center: { lng, lat },
+      zoom: 17,
+      duration: 2000,
     };
-
-    geocoder.geocode(searchRequest, (result) =>
-      getChurchPositionCallback(result, placeService)
-    );
+    map.flyTo(options);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.churchSelected]);
 
   return (
-    process.env && (
+    <>
       <Map
-        mapId={process.env.NEXT_PUBLIC_GOOGLE_MAP_ID}
-        defaultCenter={center}
-        defaultZoom={6}
-        streetViewControl={false}
+        id="map"
+        mapboxAccessToken={mapboxKey}
+        initialViewState={{
+          longitude: 107.5359134,
+          latitude: 16.4534687,
+          zoom: 5,
+        }}
+        mapStyle="mapbox://styles/mapbox/streets-v12"
       >
-        {placeInfo !== null && (
-          <>
-            <AdvancedMarker
-              ref={markerRef}
-              onClick={() => setInfowindowOpen(true)}
-              position={placeInfo.geometry?.location}
-              title={"Nhấn (click) vào để xem thông tin chi tiết"}
-            ></AdvancedMarker>
-            {infowindowOpen && (
-              <InfoWindow
-                anchor={marker}
-                maxWidth={400}
-                onCloseClick={() => setInfowindowOpen(false)}
-              >
-                <Text strong>Nhà thờ {state.churchSelected?.name}</Text>
-                <Paragraph>
-                  <ul>
-                    <li>
-                      Ngày thường: {state?.churchSelected?.normal_day || ""}
-                    </li>
-                    <li>Thứ Bảy: {state?.churchSelected?.saturday || ""}</li>
-                    <li>Chúa Nhật: {state?.churchSelected?.sunday || ""}</li>
-                  </ul>
-                </Paragraph>
-                <Link target="_shift" href={placeInfo.url}>
-                  Xem trên Google Map{" "}
-                </Link>
-              </InfoWindow>
-            )}
-          </>
+        {state.churchSelected && (
+          <MapMarkerAndPopup churchSelected={state.churchSelected} />
         )}
+        <NavigationControl />
+        <GeolocateControl />
       </Map>
-    )
+    </>
   );
 }
 
-function MapProvider() {
+const MapMarkerAndPopup = ({ churchSelected }: { churchSelected: Church }) => {
+  const markerRef = useRef<mapboxgl.Marker | null>(null);
+
+  useEffect(() => {
+    markerRef.current
+      ?.setPopup(
+        new mapboxgl.Popup({
+          anchor: "bottom",
+          offset: 25,
+          closeButton: true,
+          closeOnClick: true,
+          closeOnMove: false,
+          maxWidth: "300px",
+          focusAfterOpen: true,
+        }).setHTML(
+          `<div class="${styles.popup}">
+          <p>Nhà thờ ${churchSelected.name}</p>
+          <ul>
+            <li>Ngày thường: ${churchSelected.normal_day}</li>
+            <li>Thứ Bảy: ${churchSelected.saturday}</li>
+            <li>Chúa Nhật: ${churchSelected.sunday}</li>
+          </ul>
+        </div>`
+        )
+      )
+      .togglePopup();
+  }, [churchSelected]);
+
+  const togglePopup = useCallback(() => {
+    markerRef.current?.togglePopup();
+  }, []);
+
   return (
-    <APIProvider
-      apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API || ""}
-      language="vi"
-      region="VN"
-      libraries={["marker"]}
-    >
-      <MapCompoment />
-    </APIProvider>
+    <Marker
+      longitude={churchSelected.lng}
+      latitude={churchSelected.lat}
+      color="red"
+      ref={markerRef}
+      onClick={togglePopup}
+    />
   );
-}
-
-export default MapProvider;
+};
