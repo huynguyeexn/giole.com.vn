@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Giờ thánh lễ",
+  title: "Giờ lễ",
   description: "Tra cứu, tìm kiếm thông tin giờ lễ các giáo xứ trên toàn quốc",
   authors: [{ name: "Hui", url: "https://github.com/huynguyeexn" }],
 };
@@ -30,7 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="vi">
+      <link rel="icon" href="favicon.svg" sizes="any" />
       <body style={style} className={inter.className}>
         <SWRProvider>
           <AntdRegistry>{children}</AntdRegistry>

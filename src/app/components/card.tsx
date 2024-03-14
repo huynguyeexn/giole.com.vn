@@ -8,7 +8,7 @@ export default function CardComponent() {
   return (
     <Card
       style={{ height: "100%" }}
-      title={<Title level={3}>Giờ thánh lễ</Title>}
+      title={<Title level={3}>Tìm kiếm thông tin giờ lễ</Title>}
       bordered={false}
     >
       <SearchInput />
