@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            cd /code/giole-project/giole.com.vn
+            cd ~/giole.com.vn
             git pull origin production
             git status
             make production
