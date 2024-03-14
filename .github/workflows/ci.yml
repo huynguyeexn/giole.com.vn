@@ -21,5 +21,8 @@ jobs:
 
       - name: Build and test
         run: |
+          touch .env
+          echo NEXT_PUBLIC_API_URI=${{ secrets.NEXT_PUBLIC_API_URI }} >> .env
+          cat .env
           docker build -t giole-container .
           docker run giole-container yarn lint
