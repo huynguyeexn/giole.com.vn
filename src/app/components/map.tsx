@@ -1,16 +1,14 @@
-import MapboxLanguage from "@mapbox/mapbox-gl-language";
-// import mapboxgl, { Map } from "mapbox-gl";
-import { useCallback, useContext, useEffect, useMemo, useRef } from "react";
-import { HomeContext } from "../context";
-import styles from "./styles.module.scss";
+import { Church } from "@/types/church";
+import mapboxgl from "mapbox-gl";
+import { useCallback, useContext, useEffect, useRef } from "react";
 import Map, {
   GeolocateControl,
   Marker,
   NavigationControl,
   useMap,
 } from "react-map-gl";
-import mapboxgl from "mapbox-gl";
-import { Church } from "@/types/church";
+import { HomeContext } from "../context";
+import styles from "./styles.module.scss";
 
 const mapboxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY || "";
 
