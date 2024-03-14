@@ -56,8 +56,13 @@ export default function HomeComponent({ initData }: Props) {
           <Space>
             <Button
               onClick={handleCloseDrawer}
-              type="text"
-              icon={<CloseOutlined />}
+              type={"text"}
+              icon={
+                <CloseOutlined
+                  onPointerEnterCapture={undefined}
+                  onPointerLeaveCapture={undefined}
+                />
+              }
               size={"large"}
             />
           </Space>
