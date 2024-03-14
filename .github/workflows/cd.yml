@@ -1,17 +1,25 @@
-deploy:
-  needs: build
-  runs-on: ubuntu-latest
+name: Giole.com.vn CD
 
-  steps:
-    - name: Deploy to server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        port: 22
-        script: |
-          cd /code/giole-project/giole.com.vn
-          git pull origin production
-          git status
-          make production
+on:
+  pull_request:
+    branches: [production]
+  push:
+    branches: [production]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /code/giole-project/giole.com.vn
+            git pull origin production
+            git status
+            make production
