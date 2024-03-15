@@ -2,7 +2,7 @@ name: Giole.com.vn CD
 
 on:
   workflow_run:
-    workflows: ["Giole.com.vn CI"]
+    workflows: ["build"]
     types:
       - success
 
