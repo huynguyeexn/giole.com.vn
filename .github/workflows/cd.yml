@@ -1,15 +1,16 @@
-name: Giole.com.vn CD
+name: Deploy
 
 on:
-  pull_request:
-    branches: [production]
-  push:
-    branches: [production]
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+    branches:
+      - 'production'
 
 jobs:
-  build:
+  on-success:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -19,7 +20,12 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            cd /code/giole-project/giole.com.vn
+            cd ~/giole.com.vn
             git pull origin production
             git status
             make production
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
