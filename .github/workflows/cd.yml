@@ -1,10 +1,11 @@
-name: Giole.com.vn CD
+name: Deploy
 
 on:
   workflow_run:
-    workflows: ["build"]
-    types:
-      - success
+    workflows: ["Build"]
+    types: [success]
+    branches:
+      - 'production'
 
 jobs:
   deploy:
