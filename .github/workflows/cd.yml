@@ -1,10 +1,10 @@
 name: Giole.com.vn CD
 
 on:
-  pull_request:
-    branches: [production]
-  push:
-    branches: [production]
+  workflow_run:
+    workflows: [Giole.com.vn CI]
+    types:
+      - completed
 
 jobs:
   build:
