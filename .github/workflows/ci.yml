@@ -1,4 +1,4 @@
-name: Giole.com.vn CI
+name: Build
 
 on:
   pull_request:
