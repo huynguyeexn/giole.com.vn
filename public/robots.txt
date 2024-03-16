@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: *
+
+Sitemap: https://giole.com.vn/sitemap.xml
