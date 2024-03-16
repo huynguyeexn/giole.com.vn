@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  giole-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: giole-app-production
+    ports:
+      - ${APP_PORT}:3000
