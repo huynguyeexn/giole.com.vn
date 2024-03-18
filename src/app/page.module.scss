@@ -1,0 +1,12 @@
+@import "../styles/common.scss";
+
+.homeBanner {
+  background-image: url("/banner-full-1.webp");
+  @apply bg-cover;
+  background-position: top center;
+
+  @include Responsive(SM) {
+    background-image: url("/banner-full-mobile-1.webp");
+    background-position: top right;
+  }
+}
