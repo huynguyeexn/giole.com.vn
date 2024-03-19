@@ -53,7 +53,7 @@ export function ProvinceCombobox() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-full sm:min-w-[200px] justify-between"
         >
           {value
             ? frameworks.find((framework) => framework.value === value)?.label
@@ -61,7 +61,7 @@ export function ProvinceCombobox() {
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-full sm:min-w-[200px] p-0">
         <Command>
           <CommandInput placeholder="Search framework..." />
           <CommandList>

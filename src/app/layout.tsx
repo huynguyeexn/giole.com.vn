@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import MainHeader from "@/components/layouts/header";
+import clsx from "clsx";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <link rel="icon" href="favicon.svg" sizes="any" type="image/svg+xml" />
-      <body className={inter.className}>
+      <body className={clsx(inter.className, "text-sm")}>
         <MainHeader />
         {children}
       </body>

@@ -83,7 +83,7 @@ export default function ListFormFilter() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="flex flex-row space-x-4 items-end justify-between">
+        <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 sm:items-end sm:justify-between">
           <FormField
             control={form.control}
             name="username"
@@ -101,36 +101,38 @@ export default function ListFormFilter() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tỉnh thành</FormLabel>
-                <FormControl>
-                  <div className="">
-                    <ProvinceCombobox />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Quận huyện</FormLabel>
-                <FormControl>
-                  <div className="">
-                    <DistrictCombobox />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex flex-row space-x-4 grow sm:grow-0">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="grow">
+                  <FormLabel>Tỉnh thành</FormLabel>
+                  <FormControl>
+                    <div className="w-full">
+                      <ProvinceCombobox />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="grow">
+                  <FormLabel>Quận huyện</FormLabel>
+                  <FormControl>
+                    <div className="w-full">
+                      <DistrictCombobox />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           {/* <Button type="submit">Update profile</Button> */}
         </div>
       </form>

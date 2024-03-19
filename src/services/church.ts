@@ -1,5 +1,5 @@
-const endpoint = "/churches";
+// const endpoint = "/churches";
 
-const churchServices = {};
+// const churchServices = {};
 
-export default churchServices;
+// export default churchServices;
