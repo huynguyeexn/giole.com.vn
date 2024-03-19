@@ -18,7 +18,9 @@ export default function MainHeader() {
     <header className="container mb-4">
       <div className="flex justify-between py-4 items-center">
         <div className="logo flex items-center">
-          <Image src="/logo.webp" alt="logo" height={70} width={70} />
+          <Link href={"/"} title="Trang chủ">
+            <Image src="/logo.webp" alt="giole.com.vn" height={70} width={70} />
+          </Link>
         </div>
         <div className="menu hidden sm:block">
           <ListMenu />
@@ -58,14 +60,14 @@ const menuUrls = [
     name: "Danh sách nhà thờ",
     url: "/danh-sach",
   },
-  {
-    name: "Góp ý",
-    url: "#",
-  },
-  {
-    name: "Liên hệ",
-    url: "#",
-  },
+  // {
+  //   name: "Góp ý",
+  //   url: "#",
+  // },
+  // {
+  //   name: "Liên hệ",
+  //   url: "#",
+  // },
 ];
 
 const ListMenu = () => {

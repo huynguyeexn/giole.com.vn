@@ -5,8 +5,8 @@ const mapboxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY || "";
 
 export default function MapBoxComponent() {
   return (
-    // <div className="h-full w-full">
     <Map
+      reuseMaps
       id="map"
       mapboxAccessToken={mapboxKey}
       initialViewState={{
@@ -19,6 +19,5 @@ export default function MapBoxComponent() {
       <NavigationControl />
       <GeolocateControl />
     </Map>
-    // </div>
   );
 }
