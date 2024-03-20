@@ -1,5 +1,5 @@
 export type District = {
-  id: number;
+  id: string;
   name: string;
   unaccent_name: string;
   slug: string;

@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <link rel="icon" href="favicon.svg" sizes="any" type="image/svg+xml" />
+      <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
       <body className={clsx(inter.className, "text-sm")}>
         <MainHeader />
         {children}

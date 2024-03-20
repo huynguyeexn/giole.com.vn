@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import SearchBoxComponent from "@/components/pages/home/searchBox";
 import { clsx } from "clsx";
 import styles from "./page.module.scss";
 
@@ -23,21 +22,7 @@ export default function Home() {
           </p>
         </div>
         <div className="form-wrapper mt-20">
-          <div className="form-title w-fit py-2 px-4 rounded-tl-2xl rounded-tr-2xl bg-white">
-            <span className="font-bold">Tên nhà thờ</span>
-          </div>
-          <div className="w-full md:w-3/4 lg:2/3 backdrop-blur bg-white/50 rounded-e-2xl rounded-bl-2xl p-4 flex items-end space-x-4">
-            <div className="grow">
-              {/* <label className="mb-2 block">Tên nhà thờ</label> */}
-              <Input
-                className="border border-gray-400"
-                placeholder="Nhập tên nhà thờ (Ví dụ: Nhà thờ Ba Chuông)"
-              />
-            </div>
-            <div className="">
-              <Button>Tìm kiếm</Button>
-            </div>
-          </div>
+          <SearchBoxComponent />
         </div>
       </section>
     </main>

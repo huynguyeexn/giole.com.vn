@@ -1,14 +1,10 @@
-// import useAxios from "@/hooks/useAxios";
-// import { Church } from "@/types/church";
-// import { InitResponse } from "@/types/common";
+import useAxios from "@/hooks/useAxios";
+import { ChurchList } from "@/types/church";
 
-// const appServices = {
-//   getHomeInitData: (): Promise<InitResponse> => {
-//     return useAxios.get("/init");
-//   },
-//   search: (query: string): Promise<Church[]> => {
-//     return useAxios.get(`/search?${query}`);
-//   },
-// };
+const appServices = {
+  search: (query: string): Promise<ChurchList> => {
+    return useAxios.get(`/search?${query}`);
+  },
+};
 
-// export default appServices;
+export default appServices;

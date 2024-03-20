@@ -1,7 +1,7 @@
 import { District } from "./district";
 
 export type Province = {
-  id: number;
+  id: string;
   name: string;
   unaccent_name: string;
   slug: string;
