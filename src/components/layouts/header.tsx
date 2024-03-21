@@ -19,7 +19,7 @@ export default function MainHeader() {
       <div className="flex justify-between py-4 items-center">
         <div className="logo flex items-center">
           <Link href={"/"} title="Trang chủ">
-            <Image src="/logo.webp" alt="giole.com.vn" height={70} width={70} />
+            <Image src="/logo.webp" alt="giole.com.vn" height={60} width={60} />
           </Link>
         </div>
         <div className="menu hidden sm:block">

@@ -1,5 +1,3 @@
-// "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -9,86 +7,66 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { FormControl } from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { CommandSeparator } from "cmdk";
-import * as React from "react";
-import {
-  ControllerRenderProps,
-  UseFormReturn,
-  useWatch,
-} from "react-hook-form";
-import { FindChurchFormValues } from ".";
-import { FormControl } from "@/components/ui/form";
-import { District } from "@/types/district";
-import provinceServices from "@/services/province";
-import { toUnaccentName } from "@/utils/helpers";
 import { cn } from "@/lib/utils";
+import { Province } from "@/types/province";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
+import { FindChurchFormValues } from ".";
+import { mapDivisionType, toUnaccentName } from "@/utils/helpers";
+import { useEffect, useState } from "react";
+import provinceServices from "@/services/province";
 import { useSearchParams } from "next/navigation";
 
 type Props = {
   form: UseFormReturn<FindChurchFormValues, any, undefined>;
-  field: ControllerRenderProps<FindChurchFormValues, "district">;
+  field: ControllerRenderProps<FindChurchFormValues, "province">;
 };
 
-export function DistrictCombobox({ form, field }: Props) {
-  const [districts, setDistricts] = React.useState<District[]>([]);
+export function ProvinceCombobox({ form, field }: Props) {
+  const [provinces, setProvinces] = useState<Province[]>([]);
 
   const searchParams = useSearchParams();
-  const districtParam = searchParams.get("district") || "";
-
-  const provinceSlug = useWatch({
-    control: form.control,
-    name: "province",
-  });
+  const provinceParam = searchParams.get("Param") || "";
 
   const handleFilter = (id: string, search: string) => {
-    const extendValue = districts.find((d) => d.slug === id)?.unaccent_name;
+    const extendValue = provinces.find((p) => p.slug === id)?.unaccent_name;
     const extendSearch = toUnaccentName(search);
 
     if (extendValue?.includes(extendSearch)) return 1;
     return 0;
   };
 
-  React.useEffect(() => {
-    if (districtParam) {
-      form.setValue("district", districtParam);
+  useEffect(() => {
+    if (provinceParam) {
+      form.setValue("province", provinceParam);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [districtParam]);
+  }, [provinceParam]);
 
-  React.useEffect(() => {
-    if (!provinceSlug) {
-      setDistricts([]);
-      form.setValue("district", "");
-      return;
-    }
+  useEffect(() => {
     try {
-      const getDistrictsByProvinceId = async () => {
-        const response = await provinceServices
-          .getDistrictsByProvinceSlug(provinceSlug)
-          .catch();
-        if (response.districts) {
-          setDistricts(response.districts);
-
-          // After redirect to page has province param
-          // Change province
-          // => District has been reset
-          if (form.formState.defaultValues?.province !== provinceSlug) {
-            form.setValue("district", "");
-          }
+      const getAllProvinces = async () => {
+        const response = await provinceServices.getAllProvinces().catch();
+        if (response) {
+          setProvinces(
+            response.map((p) => {
+              p.slug = String(p.slug);
+              return p;
+            })
+          );
         }
       };
-      getDistrictsByProvinceId();
+      getAllProvinces();
     } catch (error) {
       console.log(error);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provinceSlug]);
+  }, []);
 
   return (
     <Popover>
@@ -98,28 +76,28 @@ export function DistrictCombobox({ form, field }: Props) {
             variant="outline"
             role="combobox"
             className={cn(
-              "sm:w-[200px] justify-between",
+              "w-full sm:w-[200px] justify-between",
               !field.value && "text-muted-foreground"
             )}
           >
             {field.value
-              ? districts.find((district) => district.slug === field.value)
+              ? provinces.find((province) => province.slug === field.value)
                   ?.name
-              : "Chọn quận huyện"}
+              : "Chọn tỉnh thành"}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </FormControl>
       </PopoverTrigger>
       <PopoverContent className="sm:w-[200px] p-0">
         <Command filter={handleFilter}>
-          <CommandInput placeholder="Tìm quận huyện..." className="h-9" />
-          <CommandEmpty>Không tìm thấy quận huyện.</CommandEmpty>
+          <CommandInput placeholder="Tìm tỉnh thành..." className="h-9" />
+          <CommandEmpty>Không tìm thấy tỉnh thành.</CommandEmpty>
           <CommandList>
             <CommandGroup>
               <CommandItem
                 value={""}
                 onSelect={() => {
-                  form.setValue("district", "");
+                  form.setValue("province", "");
                 }}
               >
                 Tất cả
@@ -130,15 +108,15 @@ export function DistrictCombobox({ form, field }: Props) {
                   )}
                 />
               </CommandItem>
-              {districts?.map((province) => (
+              {provinces?.map((province) => (
                 <CommandItem
                   value={province.slug}
                   key={province.slug}
                   onSelect={() => {
-                    form.setValue("district", province.slug);
+                    form.setValue("province", province.slug);
                   }}
                 >
-                  {province.name}
+                  {mapDivisionType(province.name, province.division_type)}
                   <CheckIcon
                     className={cn(
                       "ml-auto h-4 w-4",

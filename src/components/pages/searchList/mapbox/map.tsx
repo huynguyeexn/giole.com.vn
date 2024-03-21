@@ -3,7 +3,7 @@ import Map, { GeolocateControl, NavigationControl } from "react-map-gl";
 
 const mapboxKey = process.env.NEXT_PUBLIC_MAPBOX_KEY || "";
 
-export default function MapBoxComponent() {
+export default function MapComponent() {
   return (
     <Map
       reuseMaps

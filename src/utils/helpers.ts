@@ -64,7 +64,9 @@ export const mapAddress = (item: Church) => {
     item.province.division_type
   );
 
-  return `${item.address}, ${districtDivisionType}, ${provinceDivisionType}`;
+  const address = item.address ? item.address + ", " : "";
+
+  return `${address}${districtDivisionType}, ${provinceDivisionType}`;
 };
 
 export function toUnaccentName(str: string): string {

@@ -18,9 +18,7 @@ import ComboboxWrapperComponent from "./comboboxWrapper";
 
 const FindChurchFormSchema = z.object({
   churchName: z
-    .string({
-      required_error: "Vui lòng nhập tên nhà thờ cần tìm.",
-    })
+    .string()
     .trim()
     .min(3, {
       message: "Tên nhà thờ phải nhiều hơn 3 ký tự.",
@@ -30,7 +28,9 @@ const FindChurchFormSchema = z.object({
     })
     .regex(/^[\p{L}\p{M}\w ]+$/u, {
       message: "Tên nhà thờ chỉ được nhập số hoặc chữ cái.",
-    }),
+    })
+    .optional()
+    .or(z.literal("")),
   province: z.string().optional(),
   district: z.string().optional(),
 });
@@ -141,7 +141,7 @@ export default function ListFormFilter() {
               </FormItem>
             )}
           />
-          <div className="flex flex-row space-x-4 grow sm:grow-0">
+          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 grow sm:grow-0">
             <ComboboxWrapperComponent form={form} />
           </div>
           <div className="">
