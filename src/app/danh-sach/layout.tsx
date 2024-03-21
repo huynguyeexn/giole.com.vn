@@ -1,10 +1,9 @@
 "use client";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { Suspense, lazy } from "react";
-import ChurchListContextProvider from "../../context/churchListContext";
-import { ReloadIcon } from "@radix-ui/react-icons";
 import ListFormFilter from "@/components/pages/searchList/form";
 import MapBoxComponent from "@/components/pages/searchList/mapbox";
+import "mapbox-gl/dist/mapbox-gl.css";
+import { Suspense } from "react";
+import ChurchListContextProvider from "../../context/churchListContext";
 
 export default function ListPageLayout({
   children,

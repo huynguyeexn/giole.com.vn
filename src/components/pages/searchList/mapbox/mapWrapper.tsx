@@ -1,15 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-} from "@/components/ui/drawer";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ChurchListContext } from "@/context/churchListContext";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
-import "mapbox-gl/dist/mapbox-gl.css";
 import { useContext, useEffect, useState } from "react";
+import { MapProvider } from "react-map-gl";
 import MapComponent from "./map";
 
 export default function MapWrapperComponent() {
@@ -18,7 +13,7 @@ export default function MapWrapperComponent() {
 
   const [drawerOpen, setDrawer] = useState(false);
 
-  const handleCloseDrawer = () => {
+  const handleCloseDialog = () => {
     setDrawer(false);
     actions.selectChurch(undefined);
   };
@@ -30,24 +25,27 @@ export default function MapWrapperComponent() {
   }, [state]);
 
   return (
-    <>
+    <MapProvider>
       {isDesktop ? (
         <div className="hidden sm:block grow rounded-3xl bg-sky-50 overflow-hidden h-full">
           <MapComponent />
         </div>
       ) : (
-        <Drawer open={drawerOpen} onClose={handleCloseDrawer}>
-          <DrawerContent className="h-full">
-            <DrawerHeader></DrawerHeader>
-            <MapComponent />
-            <DrawerFooter>
-              <Button variant="outline" onClick={handleCloseDrawer}>
+        <Dialog open={drawerOpen} onOpenChange={handleCloseDialog}>
+          <DialogContent className="h-full w-full p-0">
+            <div className="flex flex-col">
+              {state.churchSelected && <MapComponent />}
+              <Button
+                onClick={handleCloseDialog}
+                variant={"ghost"}
+                className="w-full"
+              >
                 Đóng
               </Button>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
-    </>
+    </MapProvider>
   );
 }

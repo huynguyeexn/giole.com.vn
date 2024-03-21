@@ -12,17 +12,28 @@ import {
   SewingPinIcon,
 } from "@radix-ui/react-icons";
 import { useSearchParams } from "next/navigation";
-import { useContext, useEffect, useMemo, useState } from "react";
+import {
+  LegacyRef,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { useIsClient } from "@/hooks/useIsClient";
 
 type Props = {
   initChurches: ChurchList;
 };
 
 export default function ResultListComponent({ initChurches }: Props) {
+  const debounce = useRef<any>(null);
   const { state, actions } = useContext(ChurchListContext);
   const [churches, setChurches] = useState(initChurches);
   const [loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
+  const isClient = useIsClient();
   const allParams = useMemo(
     () => ({
       churchName: searchParams.get("churchName") || "",
@@ -32,6 +43,11 @@ export default function ResultListComponent({ initChurches }: Props) {
         : "",
     }),
     [searchParams]
+  );
+
+  const screenHeight = useMemo(
+    () => (isClient ? document.body.clientHeight : null),
+    [isClient]
   );
 
   const handleSelectChurch = (church: Church) => {
@@ -49,12 +65,60 @@ export default function ResultListComponent({ initChurches }: Props) {
       setLoading(true);
       const response = await appServices.search(queryString);
       if (response) {
+        console.log(response);
+
         setChurches(response);
       }
       setLoading(false);
     };
     search();
   }, [allParams]);
+
+  const seeMoreBtnRef = useRef<HTMLButtonElement>(null);
+
+  const handleScroll = () => {
+    if (!screenHeight) return;
+
+    const buttonPosition =
+      seeMoreBtnRef.current?.getBoundingClientRect()?.top || null;
+    if (!buttonPosition) return;
+
+    if (buttonPosition < screenHeight) {
+      handleGetNextPage();
+    }
+  };
+
+  const handleGetNextPage = useCallback(async () => {
+    if (debounce.current) {
+      clearTimeout(debounce.current);
+    }
+
+    debounce.current = setTimeout(async () => {
+      if (!churches || !churches.next_page_url) return;
+
+      const regex = /(?:\/search\?)(?<param>.*)/;
+      const queryString =
+        churches?.next_page_url?.match(regex)?.groups?.param || null;
+
+      if (!queryString) return;
+
+      let o = Object.fromEntries(
+        Object.entries(allParams).filter(([_, v]) => !!v)
+      );
+      const searchParams = new URLSearchParams(o).toString();
+
+      const response = await appServices.search(
+        searchParams + "&" + queryString
+      );
+      if (response) {
+        const newData = churches.data;
+        newData.push(...response.data);
+        response.data = newData;
+        setChurches(response);
+        console.log("newData", response);
+      }
+    }, 500);
+  }, [churches, allParams]);
 
   return (
     <>
@@ -69,13 +133,19 @@ export default function ResultListComponent({ initChurches }: Props) {
             kết quả được tìm thấy
           </p>
         </div>
-        <ScrollArea className="grow max-h-[700px] h-[90svh]">
+        <ScrollArea
+          className="grow max-h-[700px] h-[90svh]"
+          onScrollCapture={handleScroll}
+        >
           <div className="divide-y">
             {(churches.data || []).map((church, index) => (
-              <div key={church.id} className="item py-4">
-                <h3 className="text-lg font-bold">
-                  {mapChurchType(church.name, church.type)}
-                </h3>
+              <div key={`${church.id}${index}`} className="item py-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-bold">
+                    {mapChurchType(church.name, church.type)}
+                  </h3>
+                  <span className="text-gray-200">#{index + 1}</span>
+                </div>
                 <p className="text-sm text-gray-500">{mapAddress(church)}</p>
                 <ul className="my-2 space-y-1">
                   <li>
@@ -104,8 +174,12 @@ export default function ResultListComponent({ initChurches }: Props) {
               </div>
             ))}
             {churches.next_page_url && (
-              <Button variant={"ghost"} className="w-full py-6">
-                Xem thêm
+              <Button
+                ref={seeMoreBtnRef}
+                variant={"ghost"}
+                className="w-full py-6"
+              >
+                Đang tải...
               </Button>
             )}
           </div>
