@@ -1,31 +1,37 @@
 "use client";
-import ListFormFilter from "@/components/pages/searchList/form";
-import MapBoxComponent from "@/components/pages/searchList/mapbox";
-import "mapbox-gl/dist/mapbox-gl.css";
+import { SearchFormComponent } from "@/components/search-list/form";
+import MapBoxComponent from "@/components/search-list/mapbox";
+import ListPageContextProvider from "@/context/list-page-context";
+import { useIsClient } from "@/hooks/useIsClient";
 import { Suspense } from "react";
-import ChurchListContextProvider from "../../context/churchListContext";
+
+import "mapbox-gl/dist/mapbox-gl.css";
 
 export default function ListPageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isClient = useIsClient();
+
   return (
-    <ChurchListContextProvider>
+    <ListPageContextProvider>
       <main className="container text-sky-950 pb-8">
-        <section className="rounded-3xl mb-8">
+        <search className="rounded-3xl mb-8">
           <Suspense>
-            <ListFormFilter />
+            <SearchFormComponent />
           </Suspense>
-        </section>
-        <section className="result-box">
+        </search>
+        <article className="result-box">
           <div className="space-x-8 grid sm:grid-cols-2">
             {/* RESULT LIST */}
             {children}
-            <MapBoxComponent />
+
+            {/* MapBox */}
+            {isClient && <MapBoxComponent />}
           </div>
-        </section>
+        </article>
       </main>
-    </ChurchListContextProvider>
+    </ListPageContextProvider>
   );
 }

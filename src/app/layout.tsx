@@ -1,8 +1,9 @@
+import MainHeader from "@/components/layouts/Header";
+import clsx from "clsx";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+
 import "./globals.css";
-import MainHeader from "@/components/layouts/header";
-import clsx from "clsx";
 
 const inter = Inter({ subsets: ["latin"] });
 

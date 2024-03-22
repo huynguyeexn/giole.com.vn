@@ -1,5 +1,4 @@
-"use server";
-import ResultListComponent from "@/components/pages/searchList/result/resultList";
+import { ResultListComponent } from "@/components/search-list/result";
 import appServices from "@/services/app";
 import { ChurchList } from "@/types/church";
 import { Suspense } from "react";
@@ -20,17 +19,14 @@ export default async function ListPage() {
     data: [],
   };
 
-  // Remove key has empty value
   const results = await appServices.search("");
   if (results) {
     churches = results;
   }
 
   return (
-    <>
-      <Suspense>
-        <ResultListComponent initChurches={churches} />
-      </Suspense>
-    </>
+    <Suspense>
+      <ResultListComponent initChurches={churches} />
+    </Suspense>
   );
 }

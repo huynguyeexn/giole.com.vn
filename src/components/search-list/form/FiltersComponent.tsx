@@ -6,14 +6,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { UseFormReturn } from "react-hook-form";
-import { FindChurchFormValues } from ".";
-import { DistrictCombobox } from "./district";
-import { ProvinceCombobox } from "./province";
+import { DistrictCombobox } from "./DistrictCombobox";
+import { ProvinceCombobox } from "./ProvinceCombobox";
+import { FormTypes } from "@/form-schema/list-page-search-form";
 
-type Props = {
-  form: UseFormReturn<FindChurchFormValues, any, undefined>;
+type FiltersComponentProps = {
+  form: UseFormReturn<FormTypes, any, undefined>;
 };
-export default function ComboboxWrapperComponent({ form }: Props) {
+export const FiltersComponent = ({ form }: FiltersComponentProps) => {
   return (
     <>
       <FormField
@@ -50,4 +50,4 @@ export default function ComboboxWrapperComponent({ form }: Props) {
       />
     </>
   );
-}
+};

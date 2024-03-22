@@ -11,3 +11,9 @@ export type InitResponse = {
 export interface ListResponse<T> {
   data: T[];
 }
+
+export type SearchParams = {
+  churchName?: string;
+  province?: string;
+  district?: string;
+};

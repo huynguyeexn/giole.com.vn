@@ -16,7 +16,7 @@ import { usePathname } from "next/navigation";
 export default function MainHeader() {
   return (
     <header className="container mb-4">
-      <div className="flex justify-between py-4 items-center">
+      <nav className="flex justify-between py-4 items-center">
         <div className="logo flex items-center">
           <Link href={"/"} title="Trang chủ">
             <Image src="/logo.webp" alt="giole.com.vn" height={60} width={60} />
@@ -46,7 +46,7 @@ export default function MainHeader() {
             </DrawerContent>
           </Drawer>
         </div>
-      </div>
+      </nav>
     </header>
   );
 }

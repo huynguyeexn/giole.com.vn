@@ -94,3 +94,10 @@ export function toUnaccentName(str: string): string {
   str = str.trim();
   return str.toLowerCase();
 }
+
+export const toQueryString = (input: { [key: string]: string }): string => {
+  const filter = Object.fromEntries(
+    Object.entries(input).filter(([_, v]) => !!v)
+  );
+  return new URLSearchParams(filter).toString();
+};
