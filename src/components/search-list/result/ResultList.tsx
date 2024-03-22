@@ -9,6 +9,7 @@ import appServices from "@/services/app";
 import { Church, ChurchList } from "@/types/church";
 import { mapAddress, mapChurchType } from "@/utils/helpers";
 import { ReloadIcon, SewingPinIcon } from "@radix-ui/react-icons";
+import { useParams } from "next/navigation";
 import {
   useCallback,
   useContext,
@@ -31,8 +32,11 @@ export const ResultListComponent = ({
   const { state, actions } = useContext(ListPageContext);
   const [churches, setChurches] = useState(initChurches);
   const [loading, setLoading] = useState(false);
+  const params = useParams();
   const isClient = useIsClient();
-  const queryString = useQueryString();
+  const queryString = useQueryString({ params });
+
+  console.log(params);
 
   const screenHeight = useMemo(
     () => (isClient ? document.body.clientHeight : null),
@@ -54,6 +58,7 @@ export const ResultListComponent = ({
     };
     setLoading(true);
     search();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryString]);
 
   const handleScroll = () => {
@@ -68,6 +73,7 @@ export const ResultListComponent = ({
     }
   };
 
+  // Scroll to loading
   const handleGetNextPage = useCallback(async () => {
     if (debounce.current) {
       clearTimeout(debounce.current);
@@ -89,7 +95,6 @@ export const ResultListComponent = ({
         newData.push(...response.data);
         response.data = newData;
         setChurches(response);
-        console.log("newData", response);
       }
     }, 500);
   }, [churches, queryString]);

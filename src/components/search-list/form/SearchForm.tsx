@@ -16,7 +16,12 @@ import { FiltersComponent } from "./FiltersComponent";
 import { FormSchema, FormTypes } from "@/form-schema/list-page-search-form";
 import { useQueryString } from "@/hooks/useQueryString";
 import { toQueryString } from "@/utils/helpers";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { memo, useEffect, useRef } from "react";
 
 export const SearchFormComponent = memo(function SearchFormComponent() {
@@ -24,10 +29,19 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const churchNameParam = searchParams.get("churchName") || "";
-  const provinceParam = searchParams.get("province") || "";
-  const districtParam = provinceParam ? searchParams.get("district") || "" : "";
-  const queryString = useQueryString();
+  const params = useParams();
+
+  const paramChurchName = params?.churchName
+    ? decodeURI(params.churchName as string)
+    : "";
+  const paramProvince = params?.province ? (params.province as string) : "";
+  const paramDistrict = params?.district ? (params.district as string) : "";
+
+  const churchNameParam =
+    paramChurchName || searchParams.get("churchName") || "";
+  const provinceParam = paramProvince || searchParams.get("province") || "";
+  const districtParam = paramDistrict || searchParams.get("district") || "";
+  const queryString = useQueryString(params);
 
   const formDefaultValues = {
     churchName: churchNameParam,
@@ -63,10 +77,10 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
   }, [watchForm]);
 
   const handleResetForm = () => {
-    router.push(pathname);
-    form.setValue("churchName", "");
-    form.setValue("district", "");
-    form.setValue("province", "");
+    form.setValue("churchName", paramChurchName || "");
+    form.setValue("district", paramDistrict || "");
+    form.setValue("province", paramProvince || "");
+    router.push(pathname + "/?" + toQueryString(form.getValues()));
   };
 
   return (

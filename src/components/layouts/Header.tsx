@@ -60,14 +60,6 @@ const menuUrls = [
     name: "Danh sách nhà thờ",
     url: "/danh-sach",
   },
-  // {
-  //   name: "Góp ý",
-  //   url: "#",
-  // },
-  // {
-  //   name: "Liên hệ",
-  //   url: "#",
-  // },
 ];
 
 const ListMenu = () => {
@@ -89,6 +81,8 @@ const ListMenu = () => {
   );
 
   const pathname = usePathname();
+
+  console.log(pathname);
 
   const isActive = (url: string) => {
     return url === pathname ? activeStyle : "border-transparent";

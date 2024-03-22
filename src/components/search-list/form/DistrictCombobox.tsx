@@ -1,3 +1,4 @@
+"use client";
 import { FormTypes } from "@/form-schema/list-page-search-form";
 import provinceServices from "@/services/province";
 import { District } from "@/types/district";

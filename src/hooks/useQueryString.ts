@@ -2,22 +2,41 @@ import { toQueryString } from "@/utils/helpers";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-export function useQueryString() {
+type Props = {
+  params?: {
+    province?: string;
+    churchName?: string;
+  };
+};
+
+export function useQueryString({ params = {} }: Props) {
   const searchParams = useSearchParams();
+
   const allParams = useMemo(() => {
+    let churchName = searchParams.get("churchName") || "";
+    let province = searchParams.get("province") || "";
+
+    let district = searchParams.get("province")
+      ? searchParams.get("district") || ""
+      : "";
+
+    if (params && params?.churchName) {
+      churchName = decodeURI(params.churchName);
+    }
+    if (params && params?.province) {
+      province = params.province;
+    }
+
     return toQueryString({
-      churchName: searchParams.get("churchName") || "",
-      province: searchParams.get("province") || "",
-      district: searchParams.get("province")
-        ? searchParams.get("district") || ""
-        : "",
+      churchName,
+      province,
+      district,
     });
-  }, [searchParams]);
+  }, [params, searchParams]);
 
   const [queryString, setQueryString] = useState(allParams);
 
   useEffect(() => {
-    console.log("setQueryString", allParams);
     setQueryString(allParams);
   }, [allParams]);
 

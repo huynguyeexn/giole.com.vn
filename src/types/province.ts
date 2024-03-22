@@ -1,3 +1,4 @@
+import { Church } from "./church";
 import { District } from "./district";
 
 export type Province = {
@@ -8,6 +9,7 @@ export type Province = {
   code: number;
   division_type: number;
   districts?: District[];
+  churches?: Church[];
   created_at: Date;
   updated_at: Date;
   deleted_at?: Date;
