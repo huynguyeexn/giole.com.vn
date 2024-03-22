@@ -2,11 +2,6 @@
 
 dev:
 	docker compose up
-dev-renew-node-module:
-# docker volume rm example_node_modules
-# rm -rf local/path/to/node_modules
-# mkdir local/path/to/node_modules
-
 stop:
 	docker compose stop
 build:
