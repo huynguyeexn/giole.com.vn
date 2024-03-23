@@ -1,12 +1,28 @@
 @import "@/styles/common.scss";
 
 .homeBanner {
-  background-image: url("/banner-full-1.webp");
   @apply bg-cover;
+  background-image: url("/images/banner-4k.webp");
   background-position: top center;
 
+  @include Responsive(XL) {
+    background-image: url("/images/banner-1440.webp");
+    background-position: top center;
+  }
+  @include Responsive(LG) {
+    background-image: url("/images/banner-1080.webp");
+    background-position: top center;
+  }
+  @include Responsive(MD) {
+    background-image: url("/images/banner-tablet.webp");
+    background-position: top right;
+  }
   @include Responsive(SM) {
-    background-image: url("/banner-full-mobile-1.webp");
+    background-image: url("/images/banner-mobile-2-1080p.webp");
+    background-position: top right;
+  }
+  @include Responsive(XS) {
+    background-image: url("/images/banner-mobile-2.webp");
     background-position: top right;
   }
 }

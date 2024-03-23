@@ -1,77 +1,81 @@
-$X48: 480px;
+// $X48: 480px;
 $XS: 575px;
 $SM: 767px;
-$MD: 991px;
-$LG: 1199px;
-$X15: 1500px;
-$X17: 1700px;
+$MD: 1023px;
+$LG: 1279px;
+$XL: 1536px;
+// $2XL: 1700px;
 
 @mixin Responsive($canvas) {
-    @if $canvas == XS {
-        @media only screen and (max-width: $XS) {
-            @content;
-        }
-    } @else if $canvas == SM {
-        @media only screen and (max-width: $SM) {
-            @content;
-        }
-    } @else if $canvas == MD {
-        @media only screen and (max-width: $MD) {
-            @content;
-        }
-    } @else if $canvas == LG {
-        @media only screen and (max-width: $LG) {
-            @content;
-        }
-    } @else if $canvas == X15 {
-        @media only screen and (max-width: $X15) {
-            @content;
-        }
-    } @else if $canvas == X17 {
-        @media only screen and (max-width: $X17) {
-            @content;
-        }
-    } @else if $canvas == X48 {
-        @media only screen and (max-width: $X48) {
-            @content;
-        }
-    } @else if $canvas == M16 {
-        @media only screen and (max-width: 1700px) and (min-width: 1490px) {
-            @content;
-        }
-    } @else if $canvas == M13 {
-        @media only screen and (max-width: 1500px) and (min-width: 1200px) {
-            @content;
-        }
+  @if $canvas == XS {
+    @media only screen and (max-width: $XS) {
+      @content;
     }
+  } @else if $canvas == SM {
+    @media only screen and (max-width: $SM) {
+      @content;
+    }
+  } @else if $canvas == MD {
+    @media only screen and (max-width: $MD) {
+      @content;
+    }
+  } @else if $canvas == LG {
+    @media only screen and (max-width: $LG) {
+      @content;
+    }
+  } @else if $canvas == XL {
+    @media only screen and (max-width: $XL) {
+      @content;
+    }
+  }
+  //   } @else if $canvas == X15 {
+  //     @media only screen and (max-width: $X15) {
+  //       @content;
+  //     }
+  //   } @else if $canvas == X17 {
+  //     @media only screen and (max-width: $X17) {
+  //       @content;
+  //     }
+  //   } @else if $canvas == X48 {
+  //     @media only screen and (max-width: $X48) {
+  //       @content;
+  //     }
+  //   } @else if $canvas == M16 {
+  //     @media only screen and (max-width: 1700px) and (min-width: 1490px) {
+  //       @content;
+  //     }
+  //   } @else if $canvas == M13 {
+  //     @media only screen and (max-width: 1500px) and (min-width: 1200px) {
+  //       @content;
+  //     }
+  //   }
 }
 
 .desktop {
-    @include Responsive(SM) {
-        display: none !important;
-    }
+  @include Responsive(SM) {
+    display: none !important;
+  }
 }
 
 .mobile {
-    display: none !important;
-    @include Responsive(SM) {
-        display: block !important;
-    }
+  display: none !important;
+  @include Responsive(SM) {
+    display: block !important;
+  }
 }
 
 .show-desktop {
-    display: block;
+  display: block;
 
-    @include Responsive(MD) {
-        display: none;
-    }
+  @include Responsive(MD) {
+    display: none;
+  }
 }
 
 .show-mobile {
-    display: none;
+  display: none;
 
-    @include Responsive(MD) {
-        display: block;
-    }
+  @include Responsive(MD) {
+    display: block;
+  }
 }
-
