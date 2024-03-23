@@ -94,7 +94,7 @@ const ListMenu = () => {
   };
 
   return (
-    <ul className="flex flex-col sm:flex-row sm:space-x-12 text-center">
+    <div className="flex flex-col sm:flex-row sm:space-x-12 text-center">
       {menuUrls.map((item, index) => (
         <Link
           key={item.url + index}
@@ -104,6 +104,6 @@ const ListMenu = () => {
           {item.name}
         </Link>
       ))}
-    </ul>
+    </div>
   );
 };
