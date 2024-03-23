@@ -11,4 +11,7 @@ cmd:
 
 # Production cmd
 production:
-	docker compose -f docker-compose.prod.yml down && docker compose -f docker-compose.prod.yml up -d --build
+	docker stop giole-app-production || true \
+	&& docker rm giole-app-production || true \
+	&& docker compose -f docker-compose.prod.yml down \
+	&& docker compose -f docker-compose.prod.yml up -d --build

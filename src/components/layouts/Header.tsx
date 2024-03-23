@@ -33,7 +33,7 @@ export default function MainHeader() {
         <div className="menu-button block sm:hidden">
           <Drawer>
             <DrawerTrigger asChild>
-              <Button variant={"outline"}>
+              <Button aria-label="menu" variant={"outline"}>
                 <HamburgerMenuIcon />
               </Button>
             </DrawerTrigger>
