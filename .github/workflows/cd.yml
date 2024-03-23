@@ -1,13 +1,14 @@
 name: Deploy
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [production]
 
 jobs:
-  on-success:
+  if_merged:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.pull_request.merged == true }}
     steps:
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -21,8 +22,3 @@ jobs:
             git pull origin production
             git status
             make production
-  on-failure:
-    runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    steps:
-      - run: echo 'The triggering workflow failed'
