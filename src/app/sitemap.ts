@@ -1,14 +1,21 @@
-const BASE_URL = "https://giole.com.vn";
-
 import { MetadataRoute } from "next";
-import provinceServices from "../services/province";
+import provinceServices from "@/services/province";
+import { MAIN_SITEMAP_ID } from "@/utils/constants";
+
+const BASE_URL = process.env.BASE_URL || "https://giole.com.vn";
+
 export async function generateSitemaps() {
-  // Fetch the total number of products and calculate the number of sitemaps needed
-  return Array(64)
-    .fill({})
-    .map((_, index) => ({
-      id: index + 1,
-    }));
+  const resuldIds: Array<{ id?: number | string | null }> = [];
+  const allProvinces = await provinceServices.getAllProvinces();
+
+  allProvinces.forEach((province) => {
+    resuldIds.push({
+      id: province.id,
+    });
+  });
+
+  resuldIds.push({ id: MAIN_SITEMAP_ID });
+  return resuldIds;
 }
 
 export default async function sitemap({
@@ -16,53 +23,64 @@ export default async function sitemap({
 }: {
   id: number;
 }): Promise<MetadataRoute.Sitemap> {
-  if (id === 1) {
-    return [
-      {
-        url: BASE_URL,
-        lastModified: new Date(),
-        priority: 1,
-        changeFrequency: "monthly",
-      },
-      {
-        url: `${BASE_URL}/danh-sach`,
-        lastModified: new Date(),
-        priority: 0.9,
-        changeFrequency: "monthly",
-      },
-    ];
-  }
+  const sitemaps: MetadataRoute.Sitemap = [];
 
-  const genUrl = (churchName = "", province = "", district = "") => {
-    return `${BASE_URL}/danh-sach/${province}/${churchName}`;
-  };
+  // Home, Search Page
+  if (id === MAIN_SITEMAP_ID) {
+    sitemaps.push({
+      url: BASE_URL,
+      lastModified: new Date(),
+      priority: 1.0,
+      changeFrequency: "monthly",
+    });
+    sitemaps.push({
+      url: `${BASE_URL}/danh-sach`,
+      lastModified: new Date(),
+      priority: 0.9,
+      changeFrequency: "monthly",
+    });
+  } else {
+    // Churches detail page
+    try {
+      const provinceData = await provinceServices.getDistrictsByProvinceId(id);
+      const churchesData = provinceData.churches;
 
-  try {
-    const provinceData = await provinceServices.getDistrictsByProvinceId(id);
-    const districtData = provinceData.districts;
-    const churchesData = provinceData.churches;
-    if (churchesData) {
-      const result = churchesData.map((church) => {
-        const name = church.unaccent_name;
-        const province = provinceData.slug;
-        const district =
-          districtData?.find((d) => Number(d.id) == church.district_id)?.slug ||
-          "";
+      const genUrl = (churchName = "", province = "") => {
+        return `${BASE_URL}/danh-sach/${province}/${encodeURI(churchName)}`;
+      };
 
-        const url = genUrl(name, province, district);
+      if (provinceData) {
+        const url = genUrl("", provinceData.slug);
 
-        return {
+        sitemaps.push({
           url: url,
           lastModified: new Date(),
           priority: 0.8,
           changeFrequency: "monthly" as "monthly",
-        };
-      });
-      return result;
+        });
+      }
+
+      if (churchesData) {
+        const churchesUrls = churchesData.map((church) => {
+          const name = church.unaccent_name;
+          const province = provinceData.slug;
+          const url = genUrl(name, province);
+
+          return {
+            url: url,
+            lastModified: new Date(),
+            priority: 0.8,
+            changeFrequency: "monthly" as "monthly",
+          };
+        });
+
+        sitemaps.push(...churchesUrls);
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
-  } catch (error) {
-    console.error(error);
   }
 
-  return [];
+  return sitemaps;
 }

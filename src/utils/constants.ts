@@ -1,3 +1,5 @@
+export const MAIN_SITEMAP_ID = 0;
+
 export const DIVISION_TYPE = {
   PROVINCE: {
     CODE: 1,

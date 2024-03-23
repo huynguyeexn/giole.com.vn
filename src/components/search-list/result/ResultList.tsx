@@ -20,7 +20,7 @@ import {
 } from "react";
 
 type ResultListComponentProps = {
-  initChurches: ChurchList;
+  initChurches?: ChurchList;
 };
 
 export const ResultListComponent = ({
@@ -107,7 +107,7 @@ export const ResultListComponent = ({
             {loading ? (
               <ReloadIcon className="animate-spin mr-1" />
             ) : (
-              churches.total || 0
+              churches?.total || 0
             )}{" "}
             kết quả được tìm thấy
           </p>
@@ -117,13 +117,13 @@ export const ResultListComponent = ({
           onScrollCapture={handleScroll}
         >
           <div className="divide-y">
-            {!loading && (
+            {!loading && churches && (
               <ResultItems
                 churches={churches.data}
                 onSelectChurch={handleSelectChurch}
               />
             )}
-            {churches.next_page_url && (
+            {churches?.next_page_url && (
               <Button
                 ref={seeMoreBtnRef}
                 variant={"ghost"}
