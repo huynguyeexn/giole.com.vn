@@ -1,9 +1,8 @@
 name: Deploy
 
 on:
-  pull_request_review:
+  push:
     branches: [production]
-    types: [submitted]
 
 jobs:
   on-success:
