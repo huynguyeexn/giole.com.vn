@@ -87,8 +87,6 @@ const ListMenu = () => {
 
   const pathname = usePathname();
 
-  console.log(pathname);
-
   const isActive = (url: string) => {
     return url === pathname ? activeStyle : "border-transparent";
   };

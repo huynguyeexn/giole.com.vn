@@ -1,15 +1,12 @@
 import { toQueryString } from "@/utils/helpers";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
-type Props = {
-  params?: {
-    province?: string;
-    churchName?: string;
-  };
+type ParamType = {
+  province?: string;
 };
-
-export function useQueryString({ params = {} }: Props) {
+export function useQueryString() {
+  const params = useParams<ParamType>();
   const searchParams = useSearchParams();
 
   const allParams = useMemo(() => {
@@ -20,19 +17,19 @@ export function useQueryString({ params = {} }: Props) {
       ? searchParams.get("district") || ""
       : "";
 
-    if (params && params?.churchName) {
-      churchName = decodeURI(params.churchName);
-    }
-    if (params && params?.province) {
-      province = params.province;
-    }
+    // if (params && params?.churchName) {
+    //   churchName = decodeURI(params.churchName);
+    // }
+    // if (params && params?.province) {
+    //   province = params.province;
+    // }
 
     return toQueryString({
       churchName,
       province,
       district,
     });
-  }, [params, searchParams]);
+  }, [searchParams]);
 
   const [queryString, setQueryString] = useState(allParams);
 

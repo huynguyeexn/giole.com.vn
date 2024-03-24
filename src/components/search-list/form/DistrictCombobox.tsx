@@ -1,7 +1,7 @@
 "use client";
 import { FormTypes } from "@/form-schema/list-page-search-form";
 import provinceServices from "@/services/province";
-import { District } from "@/types/district";
+import { District } from "@/schema/district";
 import { useEffect, useState } from "react";
 import {
   ControllerRenderProps,

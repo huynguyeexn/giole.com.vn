@@ -2,7 +2,9 @@
 import { SearchFormComponent } from "@/components/search-list/form";
 import MapBoxComponent from "@/components/search-list/mapbox";
 import ListPageContextProvider from "@/context/list-page-context";
+import { useFormDefaultValues } from "@/hooks/useFormDefaultValues";
 import { useIsClient } from "@/hooks/useIsClient";
+import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 export const SearchPageLayout = ({
@@ -11,9 +13,14 @@ export const SearchPageLayout = ({
   children: React.ReactNode;
 }) => {
   const isClient = useIsClient();
+  const formDefaultValues = useFormDefaultValues();
 
   return (
-    <ListPageContextProvider>
+    <ListPageContextProvider
+      initValues={{
+        formInput: formDefaultValues,
+      }}
+    >
       <main className="container text-sky-950 pb-8">
         <search className="rounded-3xl mb-8">
           <Suspense>

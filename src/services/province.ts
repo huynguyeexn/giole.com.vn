@@ -1,5 +1,5 @@
 import useAxios from "@/hooks/useAxios";
-import { Province } from "@/types/province";
+import { Province } from "@/schema/province";
 
 const endpoint = "/provinces";
 

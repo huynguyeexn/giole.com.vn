@@ -1,7 +1,7 @@
 "use client";
 import { FormTypes } from "@/form-schema/list-page-search-form";
 import provinceServices from "@/services/province";
-import { Province } from "@/types/province";
+import { Province } from "@/schema/province";
 import { useEffect, useState } from "react";
 import { ControllerRenderProps, UseFormReturn } from "react-hook-form";
 import { CustomCombobox } from "./CustomCombobox";

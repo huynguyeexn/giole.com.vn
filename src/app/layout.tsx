@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   title: "Giờ lễ các giáo xứ trên toàn quốc",
   description:
     "Giole.com.vn là website chuyên cung cấp thông tin giờ lễ các nhà thờ, giáo xứ tại Việt Nam. Cung cấp thông tin giờ lễ nhà thờ chính xác và cập nhật nhanh nhất. Tìm kiếm theo vị trí, tên nhà thờ. Giao diện đơn giản, dễ sử dụng, thân thiện với mọi thiết bị.",
+  keywords:
+    "giờ lễ, giờ thánh lễ, giờ lễ nhà thờ, lễ nhà thờ, tìm kiếm giờ lễ, tìm giờ lễ, tìm kiếm giờ thánh lễ, tìm giờ thánh lễ, danh sách nhà thờ",
 };
 
 export default function RootLayout({

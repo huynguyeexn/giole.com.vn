@@ -1,10 +1,11 @@
-import { ResultListComponent } from "@/components/search-list/result";
 import appServices from "@/services/app";
 import provinceServices from "@/services/province";
-import { ChurchList } from "@/types/church";
+import {
+  ChurchPagination,
+  ChurchPaginationInitialValues,
+} from "@/schema/church";
 import { mapDivisionType } from "@/utils/helpers";
-import React from "react";
-import { Suspense } from "react";
+import PageProvinceResultComponent from "./result";
 
 type ChurchByProvincePageProps = {
   params: { province: string };
@@ -14,31 +15,14 @@ type ChurchByProvincePageProps = {
 export default async function ChurchByProvincePage({
   params,
 }: ChurchByProvincePageProps) {
-  let churches: ChurchList = {
-    total: 0,
-    per_page: 0,
-    current_page: 0,
-    last_page: 0,
-    first_page_url: "",
-    last_page_url: "",
-    next_page_url: "",
-    prev_page_url: "",
-    path: "",
-    from: 0,
-    to: 0,
-    data: [],
-  };
+  let churches: ChurchPagination = ChurchPaginationInitialValues;
 
   const results = await appServices.search("province=" + params.province);
   if (results) {
     churches = results;
   }
 
-  return (
-    <Suspense>
-      <ResultListComponent initChurches={churches} />
-    </Suspense>
-  );
+  return <PageProvinceResultComponent churches={churches} />;
 }
 
 export async function generateMetadata({ params }: ChurchByProvincePageProps) {

@@ -1,7 +1,7 @@
 import { ResultListComponent } from "@/components/search-list/result";
 import appServices from "@/services/app";
 import provinceServices from "@/services/province";
-import { ChurchList } from "@/types/church";
+import { ChurchPagination } from "@/schema/church";
 import { mapDivisionType, mapChurchType } from "@/utils/helpers";
 import React from "react";
 import { Suspense } from "react";
@@ -18,7 +18,7 @@ type ChurchByProvinceAndNamePageProps = {
 export default async function ChurchByProvinceAndNamePage({
   params,
 }: ChurchByProvinceAndNamePageProps) {
-  let churches: ChurchList = {
+  let churches: ChurchPagination = {
     total: 0,
     per_page: 0,
     current_page: 0,
@@ -44,7 +44,7 @@ export default async function ChurchByProvinceAndNamePage({
 
   return (
     <Suspense>
-      <ResultListComponent initChurches={churches} />
+      <ResultListComponent churches={churches} />
     </Suspense>
   );
 }

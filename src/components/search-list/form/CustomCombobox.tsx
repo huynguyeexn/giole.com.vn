@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/popover";
 import { FormTypes } from "@/form-schema/list-page-search-form";
 import { cn } from "@/lib/utils";
-import { District } from "@/types/district";
-import { Province } from "@/types/province";
+import { District } from "@/schema/district";
+import { Province } from "@/schema/province";
 import { mapDivisionType, toUnaccentName } from "@/utils/helpers";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo } from "react";

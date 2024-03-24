@@ -46,7 +46,14 @@ export default async function sitemap({
       const churchesData = provinceData.churches;
 
       const genUrl = (churchName = "", province = "") => {
-        return `${BASE_URL}/danh-sach/${province}/${encodeURI(churchName)}`;
+        if (province) {
+          province = `/${province}`;
+        }
+        if (churchName) {
+          churchName = `/${encodeURI(churchName)}`;
+        }
+
+        return `${BASE_URL}/danh-sach${province}${churchName}`;
       };
 
       if (provinceData) {

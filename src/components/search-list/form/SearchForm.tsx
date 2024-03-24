@@ -13,41 +13,47 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { FiltersComponent } from "./FiltersComponent";
 
-import { FormSchema, FormTypes } from "@/form-schema/list-page-search-form";
-import { useQueryString } from "@/hooks/useQueryString";
-import { toQueryString } from "@/utils/helpers";
+import { ListPageContext } from "@/context/list-page-context";
 import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import { memo, useEffect, useRef } from "react";
+  FormDefaultValues,
+  FormSchema,
+  FormTypes,
+} from "@/form-schema/list-page-search-form";
+import { useQueryString } from "@/hooks/useQueryString";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
+import { toQueryString } from "@/utils/helpers";
+import { useFormDefaultValues } from "@/hooks/useFormDefaultValues";
 
 export const SearchFormComponent = memo(function SearchFormComponent() {
   const debounce = useRef<any>(null);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const params = useParams();
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const searchParams = useSearchParams();
+  const formDefaultValues = useFormDefaultValues();
 
-  const paramChurchName = params?.churchName
-    ? decodeURI(params.churchName as string)
-    : "";
-  const paramProvince = params?.province ? (params.province as string) : "";
-  const paramDistrict = params?.district ? (params.district as string) : "";
+  // const params = useParams();
+  const { state, actions } = useContext(ListPageContext);
 
-  const churchNameParam =
-    paramChurchName || searchParams.get("churchName") || "";
-  const provinceParam = paramProvince || searchParams.get("province") || "";
-  const districtParam = paramDistrict || searchParams.get("district") || "";
-  const queryString = useQueryString(params);
+  // const paramChurchName = params?.churchName
+  //   ? decodeURI(params.churchName as string)
+  //   : "";
+  // const paramProvince = params?.province ? (params.province as string) : "";
+  // const paramDistrict = params?.district ? (params.district as string) : "";
 
-  const formDefaultValues = {
-    churchName: churchNameParam,
-    province: provinceParam,
-    district: districtParam,
-  };
+  // const searchParamChurchName = searchParams.get("churchName") || "";
+  // const churchNameParam =
+  //   paramChurchName || searchParams.get("churchName") || "";
+  // const provinceParam = paramProvince || searchParams.get("province") || "";
+  // const districtParam = paramDistrict || searchParams.get("district") || "";
+  const queryString = useQueryString();
 
   const form = useForm<FormTypes>({
     resolver: zodResolver(FormSchema),
@@ -56,7 +62,18 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
     mode: "onChange",
   });
 
-  const watchForm = form.watch();
+  const churchName = form.watch("churchName");
+  const province = form.watch("province");
+  const district = form.watch("district");
+
+  const handleSubmitForm = useCallback(() => {
+    const formValues = form.getValues();
+    const newQueryString = toQueryString(formValues);
+
+    if (newQueryString === queryString) return;
+    if (form.getFieldState("churchName").invalid) return;
+    actions.setFormInput(formValues);
+  }, [actions, form, queryString]);
 
   useEffect(() => {
     if (debounce.current) {
@@ -64,23 +81,25 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
     }
 
     debounce.current = setTimeout(() => {
-      const newQueryString = toQueryString(watchForm);
-      if (newQueryString === queryString) return;
-      if (!form.getFieldState("churchName").invalid) {
-        const url = `${pathname}/?${newQueryString}`;
-        router.push(url);
-      }
-      // }
+      handleSubmitForm();
     }, 1000);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watchForm]);
+  }, [churchName]);
+
+  useEffect(() => {
+    if (debounce.current) {
+      clearTimeout(debounce.current);
+    }
+
+    handleSubmitForm();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [province, district]);
 
   const handleResetForm = () => {
-    form.setValue("churchName", paramChurchName || "");
-    form.setValue("district", paramDistrict || "");
-    form.setValue("province", paramProvince || "");
-    router.push(pathname + "/?" + toQueryString(form.getValues()));
+    form.setValue("churchName", "");
+    form.setValue("district", "");
+    form.setValue("province", "");
+    handleSubmitForm();
   };
 
   return (
