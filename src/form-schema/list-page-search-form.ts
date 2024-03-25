@@ -25,4 +25,8 @@ export const FormSchema = z.object({
 
 export type FormTypes = z.infer<typeof FormSchema>;
 
-export const FormDefaultValues: Partial<FormTypes> = {};
+export const FormDefaultValues: Partial<FormTypes> = {
+  churchName: "",
+  province: "",
+  district: "",
+};

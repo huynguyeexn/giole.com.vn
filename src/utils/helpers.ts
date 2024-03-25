@@ -1,4 +1,4 @@
-import { Church } from "@/types/church";
+import { Church } from "@/schema/church";
 import { CHURCH_TYPE, DIVISION_TYPE } from "./constants";
 
 export const mapDivisionType = (name: string, type: string | number) => {

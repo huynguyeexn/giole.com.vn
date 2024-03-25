@@ -25,7 +25,7 @@ export type Church = {
   district: District;
 };
 
-export type ChurchList = {
+export type ChurchPagination = {
   total: number;
   per_page: number;
   current_page: number;
@@ -38,4 +38,19 @@ export type ChurchList = {
   from: number;
   to: number;
   data: Church[];
+};
+
+export const ChurchPaginationInitialValues = {
+  total: 0,
+  per_page: 0,
+  current_page: 0,
+  last_page: 0,
+  first_page_url: "",
+  last_page_url: "",
+  next_page_url: "",
+  prev_page_url: "",
+  path: "",
+  from: 0,
+  to: 0,
+  data: [],
 };

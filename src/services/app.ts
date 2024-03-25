@@ -1,8 +1,8 @@
 import useAxios from "@/hooks/useAxios";
-import { ChurchList } from "@/types/church";
+import { ChurchPagination } from "@/schema/church";
 
 const appServices = {
-  search: (query: string): Promise<ChurchList> => {
+  search: (query: string): Promise<ChurchPagination> => {
     return useAxios.get(`/search?${query}`);
   },
 };

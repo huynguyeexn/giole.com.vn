@@ -14,4 +14,4 @@ production:
 	docker stop giole-app-production || true \
 	&& docker rm giole-app-production || true \
 	&& docker compose -f docker-compose.prod.yml down \
-	&& docker compose -f docker-compose.prod.yml up -d --build
+	&& docker compose -f docker-compose.prod.yml up -d --build --remove-orphans

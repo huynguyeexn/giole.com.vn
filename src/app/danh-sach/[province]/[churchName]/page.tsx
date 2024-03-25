@@ -1,37 +1,22 @@
-import { ResultListComponent } from "@/components/search-list/result";
+import {
+  ChurchPagination,
+  ChurchPaginationInitialValues,
+} from "@/schema/church";
 import appServices from "@/services/app";
-import provinceServices from "@/services/province";
-import { ChurchList } from "@/types/church";
-import { mapDivisionType, mapChurchType } from "@/utils/helpers";
-import React from "react";
-import { Suspense } from "react";
-import { toQueryString } from "@/utils/helpers";
+import { mapChurchType, mapDivisionType, toQueryString } from "@/utils/helpers";
+import ChurchByNameComponent from "./component";
 
 type ChurchByProvinceAndNamePageProps = {
   params: {
     province: string;
     churchName: string;
   };
-  searchParams: {};
 };
 
 export default async function ChurchByProvinceAndNamePage({
   params,
 }: ChurchByProvinceAndNamePageProps) {
-  let churches: ChurchList = {
-    total: 0,
-    per_page: 0,
-    current_page: 0,
-    last_page: 0,
-    first_page_url: "",
-    last_page_url: "",
-    next_page_url: "",
-    prev_page_url: "",
-    path: "",
-    from: 0,
-    to: 0,
-    data: [],
-  };
+  let churches: ChurchPagination = ChurchPaginationInitialValues;
 
   const newParams = {
     churchName: decodeURI(params.churchName),
@@ -42,11 +27,7 @@ export default async function ChurchByProvinceAndNamePage({
     churches = results;
   }
 
-  return (
-    <Suspense>
-      <ResultListComponent initChurches={churches} />
-    </Suspense>
-  );
+  return <ChurchByNameComponent churches={churches} />;
 }
 
 export async function generateMetadata({
@@ -61,16 +42,19 @@ export async function generateMetadata({
   const results = response.data[0];
 
   if (results) {
+    const church = mapChurchType(results.name, results.type);
+    const address = mapDivisionType(
+      results.province.name,
+      results.province.division_type
+    );
     return {
-      title:
-        "Giờ lễ " +
-        mapChurchType(results.name, results.type) +
-        " - " +
-        mapDivisionType(results.province.name, results.province.division_type),
+      title: "Giờ lễ " + church + " - " + address,
+      keywords: `
+      ${church}, ${church} ${address}, giờ lễ ${church}, giờ thánh lễ ${church}, xem giờ lễ ${church}, xem giờ thánh lễ ${church}, tìm giờ lễ ${church}, tìm giờ thánh lễ ${church}, giờ lễ, giờ thánh lễ, giờ lễ nhà thờ, lễ nhà thờ, tìm giờ lễ, tìm kiếm giờ lễ, tìm giờ thánh lễ, tìm kiếm giờ thánh lễ,xem giờ lễ, xem kiếm giờ lễ, xem giờ thánh lễ, xem kiếm giờ thánh lễ`,
     };
   }
 
   return {
-    title: "Giờ lễ nhà thờ",
+    title: "Giờ lễ nhà thờ" + params.churchName,
   };
 }
