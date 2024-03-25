@@ -4,34 +4,29 @@ import { useEffect, useMemo, useState } from "react";
 
 type ParamType = {
   province?: string;
+  churchName?: string;
 };
 export function useQueryString() {
   const params = useParams<ParamType>();
   const searchParams = useSearchParams();
 
+  const churchNameParams = decodeURI(params.churchName || "") as string;
   const provinceParams = (params.province || "") as string;
 
   const allParams = useMemo(() => {
-    let churchName = searchParams.get("churchName") || "";
+    let churchName = churchNameParams || searchParams.get("churchName") || "";
     let province = provinceParams || searchParams.get("province") || "";
 
     let district = searchParams.get("province")
       ? searchParams.get("district") || ""
       : "";
 
-    // if (params && params?.churchName) {
-    //   churchName = decodeURI(params.churchName);
-    // }
-    // if (params && params?.province) {
-    //   province = params.province;
-    // }
-
     return toQueryString({
       churchName,
       province,
       district,
     });
-  }, [provinceParams, searchParams]);
+  }, [churchNameParams, provinceParams, searchParams]);
 
   const [queryString, setQueryString] = useState(allParams);
 

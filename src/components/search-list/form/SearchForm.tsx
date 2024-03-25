@@ -40,6 +40,9 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
     const formValues = form.getValues();
     const newQueryString = toQueryString(formValues);
 
+    console.log("newQueryString", newQueryString);
+    console.log("queryString", queryString);
+
     if (newQueryString === queryString) return;
     if (form.getFieldState("churchName").invalid) return;
     actions.setFormInput(formValues);

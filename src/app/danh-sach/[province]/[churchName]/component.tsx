@@ -7,13 +7,13 @@ import { toQueryString } from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { Suspense, useContext, useEffect } from "react";
 
-type ChurchByProvinceProps = {
+type ChurchByNameComponentProps = {
   churches: ChurchPagination;
 };
 
-export default function ChurchByProvinceComponent({
+export default function ChurchByNameComponent({
   churches,
-}: ChurchByProvinceProps) {
+}: ChurchByNameComponentProps) {
   const { state, actions } = useContext(ListPageContext);
   const queryString = useQueryString();
   const router = useRouter();

@@ -4,9 +4,11 @@ export function useFormDefaultValues() {
   const params = useParams();
   const searchParams = useSearchParams();
 
-  const provinceParam = params["province"] as string;
+  const provinceParam = (params["province"] || "") as string;
+  const churchNameParams = (params["churchName"] || "") as string;
 
-  const churchName = searchParams.get("churchName") || "";
+  const churchName =
+    decodeURI(churchNameParams) || searchParams.get("churchName") || "";
   const province = provinceParam || searchParams.get("province") || "";
   const district = searchParams.get("district") || "";
 
