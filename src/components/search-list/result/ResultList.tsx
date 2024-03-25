@@ -1,9 +1,6 @@
 "use client";
 import { ListPageContext } from "@/context/list-page-context";
-import {
-  ChurchPagination,
-  ChurchPaginationInitialValues,
-} from "@/schema/church";
+import { ChurchPagination } from "@/schema/church";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { memo, useContext, useEffect, useState } from "react";
 import { ResultScrollArea } from "./ResultScrollArea";
@@ -18,7 +15,7 @@ export const ResultListComponent = memo(function ResultListComponent({
   const { state } = useContext(ListPageContext);
   const { isLoading, churchResultList } = state;
 
-  const [churches, setChurches] = useState(churchesProp || churchResultList);
+  const [churches, setChurches] = useState(churchResultList);
 
   useEffect(() => {
     setChurches(churchResultList);
@@ -29,15 +26,18 @@ export const ResultListComponent = memo(function ResultListComponent({
       <section className="relative">
         <header className="title">
           <p className="mb-4 text-xl font-bold flex items-center">
-            {isLoading ? (
-              <ReloadIcon className="animate-spin mr-1" />
+            {!isLoading ? (
+              churchesProp?.total || churches?.total || 0
             ) : (
-              churches?.total || 0
+              <ReloadIcon className="animate-spin mr-1" />
             )}{" "}
             kết quả được tìm thấy
           </p>
         </header>
-        <ResultScrollArea churches={churches} setChurches={setChurches} />
+        <ResultScrollArea
+          churches={churchesProp || churches}
+          setChurches={setChurches}
+        />
       </section>
     </>
   );

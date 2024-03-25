@@ -6,15 +6,7 @@ import { useIsClient } from "@/hooks/useIsClient";
 import { useQueryString } from "@/hooks/useQueryString";
 import { Church, ChurchPagination } from "@/schema/church";
 import appServices from "@/services/app";
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import { Dispatch, SetStateAction, useContext, useMemo, useRef } from "react";
 import { ResultItems } from "./ResultItems";
 
 type ResultScrollAreaProps = {
@@ -40,10 +32,29 @@ export const ResultScrollArea = ({
     () => (isClient ? document.body.clientHeight : null),
     [isClient]
   );
+
   const handleSelectChurch = (church: Church) => {
     actions.selectChurch(church);
   };
+  const handleGetNextPage = async () => {
+    if (debounce.current) {
+      clearTimeout(debounce.current);
+    }
 
+    debounce.current = setTimeout(async () => {
+      if (!churches) return;
+      if (churches.current_page >= churches.last_page) return;
+
+      const nextPage = `&page=${churches.current_page + 1}`;
+      const response = await appServices.search(`${queryString}${nextPage}`);
+      if (response) {
+        const newData = churches.data;
+        newData.push(...response.data);
+        response.data = newData;
+        setChurches(response);
+      }
+    }, 500);
+  };
   const handleScroll = () => {
     const buttonPosition =
       seeMoreBtnRef.current?.getBoundingClientRect()?.top || null;
@@ -62,31 +73,8 @@ export const ResultScrollArea = ({
     }
   };
 
-  // Scroll to loading
-  const handleGetNextPage = useCallback(async () => {
-    if (debounce.current) {
-      clearTimeout(debounce.current);
-    }
-
-    debounce.current = setTimeout(async () => {
-      if (!churches || !churches.next_page_url) return;
-
-      const regex = /(?:\/search\?)(?<page>.*)/;
-      const pageParam =
-        churches?.next_page_url?.match(regex)?.groups?.page || null;
-
-      if (!pageParam) return;
-
-      const response = await appServices.search(queryString + "&" + pageParam);
-
-      if (response) {
-        const newData = churches.data;
-        newData.push(...response.data);
-        response.data = newData;
-        setChurches(response);
-      }
-    }, 500);
-  }, [churches, queryString, setChurches]);
+  const isShowLoading = isLoading || churches.current_page < churches.last_page;
+  const isShowResult = !isLoading && churches;
 
   return (
     <ScrollArea
@@ -94,13 +82,13 @@ export const ResultScrollArea = ({
       onScrollCapture={handleScroll}
     >
       <div className="divide-y" ref={listDivRef}>
-        {!isLoading && churches && (
+        {isShowResult && (
           <ResultItems
             churches={churches.data}
             onSelectChurch={handleSelectChurch}
           />
         )}
-        {(isLoading || churches?.next_page_url) && (
+        {isShowLoading && (
           <Button ref={seeMoreBtnRef} variant={"ghost"} className="w-full py-6">
             Đang tải...
           </Button>

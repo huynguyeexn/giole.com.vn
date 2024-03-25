@@ -4,7 +4,6 @@ import MapBoxComponent from "@/components/search-list/mapbox";
 import ListPageContextProvider from "@/context/list-page-context";
 import { useFormDefaultValues } from "@/hooks/useFormDefaultValues";
 import { useIsClient } from "@/hooks/useIsClient";
-import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 export const SearchPageLayout = ({

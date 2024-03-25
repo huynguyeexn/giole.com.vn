@@ -88,6 +88,9 @@ const ListMenu = () => {
   const pathname = usePathname();
 
   const isActive = (url: string) => {
+    if (url.includes("danh-sach") && pathname.includes("danh-sach")) {
+      return activeStyle;
+    }
     return url === pathname ? activeStyle : "border-transparent";
   };
 

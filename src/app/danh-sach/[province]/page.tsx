@@ -5,11 +5,10 @@ import {
   ChurchPaginationInitialValues,
 } from "@/schema/church";
 import { mapDivisionType } from "@/utils/helpers";
-import PageProvinceResultComponent from "./result";
+import ChurchByProvinceComponent from "./component";
 
 type ChurchByProvincePageProps = {
   params: { province: string };
-  searchParams: {};
 };
 
 export default async function ChurchByProvincePage({
@@ -21,8 +20,7 @@ export default async function ChurchByProvincePage({
   if (results) {
     churches = results;
   }
-
-  return <PageProvinceResultComponent churches={churches} />;
+  return <ChurchByProvinceComponent churches={churches} />;
 }
 
 export async function generateMetadata({ params }: ChurchByProvincePageProps) {
@@ -30,10 +28,11 @@ export async function generateMetadata({ params }: ChurchByProvincePageProps) {
     params.province
   );
   if (results) {
+    const address = mapDivisionType(results.name, results.division_type);
+
     return {
-      title:
-        "Giờ lễ các nhà thờ tại " +
-        mapDivisionType(results.name, results.division_type),
+      title: `Giờ lễ các nhà thờ tại ${address}`,
+      keywords: `nhà thờ ở ${address}, nhà thờ ${address}, giờ lễ ${address}, giờ thánh lễ ${address}, giờ lễ, giờ thánh lễ, giờ lễ nhà thờ, lễ nhà thờ, tìm kiếm giờ lễ, tìm giờ lễ, tìm kiếm giờ thánh lễ, tìm giờ thánh lễ, danh sách nhà thờ,danh sách nhà thờ ${address},giờ lễ nhà thờ ${address}, lễ nhà thờ ${address}, tìm kiếm giờ lễ ${address} tìm giờ lễ ${address}, tìm kiếm giờ thánh lễ ${address}, tìm giờ thánh lễ ${address}, danh sách nhà thờ ${address},`,
     };
   }
 

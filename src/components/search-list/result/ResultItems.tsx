@@ -18,7 +18,7 @@ export const ResultItems = ({ churches, onSelectChurch }: ResultItemsProps) => {
             <h3 className="text-lg font-bold">
               {mapChurchType(church.name, church.type)}
             </h3>
-            <span className="text-gray-200 pr-4">#{index + 1}</span>
+            <span className="text-gray-200 pr-2">#{index + 1}</span>
           </div>
           <p className="text-sm text-gray-500">{mapAddress(church)}</p>
           <ul className="my-2 space-y-1">

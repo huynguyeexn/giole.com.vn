@@ -1,10 +1,13 @@
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 
 export function useFormDefaultValues() {
+  const params = useParams();
   const searchParams = useSearchParams();
 
+  const provinceParam = params["province"] as string;
+
   const churchName = searchParams.get("churchName") || "";
-  const province = searchParams.get("province") || "";
+  const province = provinceParam || searchParams.get("province") || "";
   const district = searchParams.get("district") || "";
 
   return {

@@ -12,48 +12,18 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { FiltersComponent } from "./FiltersComponent";
-
 import { ListPageContext } from "@/context/list-page-context";
-import {
-  FormDefaultValues,
-  FormSchema,
-  FormTypes,
-} from "@/form-schema/list-page-search-form";
-import { useQueryString } from "@/hooks/useQueryString";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from "react";
-import { toQueryString } from "@/utils/helpers";
+import { FormSchema, FormTypes } from "@/form-schema/list-page-search-form";
 import { useFormDefaultValues } from "@/hooks/useFormDefaultValues";
+import { useQueryString } from "@/hooks/useQueryString";
+import { toQueryString } from "@/utils/helpers";
+import { memo, useCallback, useContext, useEffect, useRef } from "react";
 
 export const SearchFormComponent = memo(function SearchFormComponent() {
   const debounce = useRef<any>(null);
-  // const router = useRouter();
-  // const pathname = usePathname();
-  // const searchParams = useSearchParams();
-  const formDefaultValues = useFormDefaultValues();
-
-  // const params = useParams();
-  const { state, actions } = useContext(ListPageContext);
-
-  // const paramChurchName = params?.churchName
-  //   ? decodeURI(params.churchName as string)
-  //   : "";
-  // const paramProvince = params?.province ? (params.province as string) : "";
-  // const paramDistrict = params?.district ? (params.district as string) : "";
-
-  // const searchParamChurchName = searchParams.get("churchName") || "";
-  // const churchNameParam =
-  //   paramChurchName || searchParams.get("churchName") || "";
-  // const provinceParam = paramProvince || searchParams.get("province") || "";
-  // const districtParam = paramDistrict || searchParams.get("district") || "";
   const queryString = useQueryString();
+  const formDefaultValues = useFormDefaultValues();
+  const { actions } = useContext(ListPageContext);
 
   const form = useForm<FormTypes>({
     resolver: zodResolver(FormSchema),

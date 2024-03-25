@@ -9,9 +9,11 @@ export function useQueryString() {
   const params = useParams<ParamType>();
   const searchParams = useSearchParams();
 
+  const provinceParams = (params.province || "") as string;
+
   const allParams = useMemo(() => {
     let churchName = searchParams.get("churchName") || "";
-    let province = searchParams.get("province") || "";
+    let province = provinceParams || searchParams.get("province") || "";
 
     let district = searchParams.get("province")
       ? searchParams.get("district") || ""
@@ -29,7 +31,7 @@ export function useQueryString() {
       province,
       district,
     });
-  }, [searchParams]);
+  }, [provinceParams, searchParams]);
 
   const [queryString, setQueryString] = useState(allParams);
 
