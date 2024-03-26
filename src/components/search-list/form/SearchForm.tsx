@@ -80,7 +80,7 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
       <form className="space-y-4">
         <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 sm:items-end sm:justify-between">
           <ChurchNameInput form={form} />
-          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 grow sm:grow-0">
+          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 grow sm:grow-0 mb-4 sm:mb-0">
             <FiltersComponent form={form} />
           </div>
           <div>

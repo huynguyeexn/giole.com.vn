@@ -38,7 +38,7 @@ export function SearchBoxComponent() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="form-title w-fit py-2 px-4 rounded-tl-2xl rounded-tr-2xl bg-white">
-          <span className="font-bold">Tên nhà thờ</span>
+          <span className="font-bold">Tìm nhà thờ</span>
         </div>
         <div className="w-full md:w-3/4 lg:2/3 backdrop-blur bg-white/50 rounded-e-2xl rounded-bl-2xl p-4 flex items-start space-x-4">
           <div className="grow">

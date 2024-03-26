@@ -9,7 +9,7 @@ export default async function ListPageLayout({
 }) {
   return (
     <Suspense>
-      <SearchPageLayout>{children}</SearchPageLayout>;
+      <SearchPageLayout>{children}</SearchPageLayout>
     </Suspense>
   );
 }

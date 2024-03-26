@@ -9,9 +9,9 @@ type ResultListComponentProps = {
   churches?: ChurchPagination;
 };
 
-export const ResultListComponent = memo(function ResultListComponent({
+export const ResultListComponent = ({
   churches: churchesProp,
-}: ResultListComponentProps) {
+}: ResultListComponentProps) => {
   const { state } = useContext(ListPageContext);
   const { isLoading, churchResultList } = state;
 
@@ -34,11 +34,12 @@ export const ResultListComponent = memo(function ResultListComponent({
             kết quả được tìm thấy
           </p>
         </header>
-        <ResultScrollArea
-          churches={churchesProp || churches}
-          setChurches={setChurches}
-        />
+        {churchesProp ? (
+          <ResultScrollArea churches={churchesProp} setChurches={setChurches} />
+        ) : (
+          <ResultScrollArea churches={churches} setChurches={setChurches} />
+        )}
       </section>
     </>
   );
-});
+};

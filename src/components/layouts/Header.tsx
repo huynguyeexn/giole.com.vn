@@ -15,8 +15,8 @@ import { usePathname } from "next/navigation";
 
 export default function MainHeader() {
   return (
-    <header className="container mb-4">
-      <nav className="flex justify-between py-4 items-center">
+    <header className="px-4 sm:container mt-4">
+      <nav className="flex justify-between items-center">
         <div className="logo flex items-center">
           <Link href={"/"} title="Trang chủ">
             <Image

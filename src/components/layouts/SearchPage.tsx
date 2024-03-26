@@ -5,6 +5,9 @@ import ListPageContextProvider from "@/context/list-page-context";
 import { useFormDefaultValues } from "@/hooks/useFormDefaultValues";
 import { useIsClient } from "@/hooks/useIsClient";
 import { Suspense } from "react";
+import { Button } from "../ui/button";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
+import ScrollTop from "./ScrollTop";
 
 export const SearchPageLayout = ({
   children,
@@ -20,7 +23,7 @@ export const SearchPageLayout = ({
         formInput: formDefaultValues,
       }}
     >
-      <main className="container text-sky-950 pb-8">
+      <main className="p-4 sm:container text-sky-950 sm:pb-8 relative">
         <search className="rounded-3xl mb-8">
           <Suspense>
             <SearchFormComponent />
@@ -35,6 +38,8 @@ export const SearchPageLayout = ({
             {isClient && <MapBoxComponent />}
           </div>
         </article>
+
+        <ScrollTop />
       </main>
     </ListPageContextProvider>
   );
