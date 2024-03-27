@@ -31,13 +31,13 @@ export default async function sitemap({
       url: BASE_URL,
       lastModified: new Date(),
       priority: 1.0,
-      changeFrequency: "monthly",
+      changeFrequency: "daily",
     });
     sitemaps.push({
       url: `${BASE_URL}/danh-sach`,
       lastModified: new Date(),
       priority: 0.9,
-      changeFrequency: "monthly",
+      changeFrequency: "daily",
     });
   } else {
     // Churches detail page
@@ -63,7 +63,7 @@ export default async function sitemap({
           url: url,
           lastModified: new Date(),
           priority: 0.8,
-          changeFrequency: "monthly" as "monthly",
+          changeFrequency: "daily" as "daily",
         });
       }
 
@@ -77,7 +77,7 @@ export default async function sitemap({
             url: url,
             lastModified: new Date(),
             priority: 0.8,
-            changeFrequency: "monthly" as "monthly",
+            changeFrequency: "daily" as "daily",
           };
         });
 

@@ -2,7 +2,7 @@
 import { ListPageContext } from "@/context/list-page-context";
 import { ChurchPagination } from "@/schema/church";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { memo, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ResultScrollArea } from "./ResultScrollArea";
 
 type ResultListComponentProps = {
@@ -25,7 +25,7 @@ export const ResultListComponent = ({
     <>
       <section className="relative">
         <header className="title">
-          <p className="mb-4 text-xl font-bold flex items-center">
+          <p className="mb-0 text-xl font-bold flex items-center">
             {!isLoading ? (
               churchesProp?.total || churches?.total || 0
             ) : (

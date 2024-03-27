@@ -77,15 +77,16 @@ export const SearchFormComponent = memo(function SearchFormComponent() {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form className="space-y-4 mb-4 sm:mb-0">
         <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 sm:items-end sm:justify-between">
           <ChurchNameInput form={form} />
-          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 grow sm:grow-0 mb-4 sm:mb-0">
+          <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4 grow sm:grow-0">
             <FiltersComponent form={form} />
           </div>
           <div>
             <Button
-              className="px-0"
+              title="Xoá bộ lọc"
+              className="p-0 underline sm:no-underline"
               type="button"
               variant={"link"}
               onClick={handleResetForm}
