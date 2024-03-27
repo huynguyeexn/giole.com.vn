@@ -24,7 +24,7 @@ export const SearchPageLayout = ({
       }}
     >
       <main className="p-4 sm:container text-sky-950 sm:pb-8 relative">
-        <search className="rounded-3xl mb-8">
+        <search className="rounded-3xl mb-4 sm:mb-8">
           <Suspense>
             <SearchFormComponent />
           </Suspense>
